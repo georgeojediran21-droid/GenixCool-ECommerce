@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Products | Genix Cool Shop</title>
+    <style>
+        /* === General Theme (Adapted from Model) === */
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #0a0a0a;
+            color: #f5f5f5;
+        }
+
+        header {
+            background-color: #111;
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-size: 1.6em;
+            color: gold;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        
+        /* Navigation (Re-styled for Genix Cool look) */
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: gold;
+        }
+
+        /* === Shop Section === */
+        .shop-section {
+            padding: 50px 30px 20px;
+            text-align: center;
+        }
+
+        .shop-section h2 {
+            color: gold;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .shop-section p {
+            color: #ccc;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        /* === Filter Bar === */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            background: #1a1a1a;
+            padding: 20px; /* Increased padding */
+            border-radius: 10px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            text-align: left; /* Align filter elements to the left within the bar */
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 180px; /* Set a minimum width for groups */
+            flex-grow: 1;
+            padding-bottom: 10px; /* Space out groups on wrap */
+        }
+        
+        .filter-bar label {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+
+        .filter-bar select,
+        .filter-bar input:not([type="range"]),
+        .filter-bar button {
+            background: #0a0a0a;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: inherit;
+            width: 100%; /* Make inputs/selects fill the group */
+            outline: none;
+            transition: border 0.3s, background 0.3s;
+            box-sizing: border-box; /* Include padding in width */
+        }
+
+        .filter-bar select:focus,
+        .filter-bar input:focus {
+            border-color: gold;
+        }
+
+        /* Price Range Specific Styles */
+        .price-range-group {
+             min-width: 200px; /* Slightly wider for the range slider */
+        }
+        .filter-bar input[type="range"] {
+            margin-top: 5px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #444;
+            height: 5px;
+            cursor: pointer;
+            border: none;
+        }
+        .filter-bar input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: gold;
+            cursor: pointer;
+        }
+
+        /* Clear Filters Button Style */
+        .filter-bar button#clearFilters {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            min-width: 120px;
+            align-self: flex-end; /* Push button to the bottom of the bar */
+        }
+        .filter-bar button#clearFilters:hover {
+            background-color: gold;
+            color: #111;
+        }
+
+        /* Pagination Controls */
+        .pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+        .pagination-controls button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .pagination-controls button:hover:not(:disabled) {
+            background: gold;
+            color: #111;
+        }
+        .pagination-controls button:disabled {
+            background: #1a1a1a;
+            cursor: not-allowed;
+            color: #555;
+        }
+        
+        /* Price Display Specific Styles */
+        .price-info {
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+        .retail-price {
+            font-weight: bold;
+            color: #fff;
+            font-size: 1.1em;
+            display: block;
+        }
+        .wholesale-price-tag {
+            font-size: 0.8em;
+            color: #aaa;
+            display: block;
+        }
+
+        /* === Product Grid === */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+        
+        .product a {
+            text-decoration: none; 
+            color: inherit;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .product img {
+            width: 100%;
+            height: 200px; 
+            object-fit: contain; 
+            border-radius: 10px;
+            background: #222; 
+        }
+
+        .product h3 {
+            color: gold;
+            margin-top: 15px;
+            font-size: 1.2em;
+        }
+
+        .product button {
+            background: gold;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .product button:hover {
+            background: #fff;
+            color: #111;
+        }
+
+        footer {
+            background-color: #111;
+            text-align: center;
+            padding: 25px;
+            color: #ccc;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: gold;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 900px) {
+            .filter-group {
+                min-width: 45%; 
+            }
+        }
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+            nav ul {
+                margin-top: 10px;
+            }
+            .filter-group {
+                min-width: 100%;
+            }
+            .filter-bar button#clearFilters {
+                align-self: center;
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Genix Cool</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html" class="active">Shop</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">🛒 Cart (<span id="cartCount">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="shop-section">
+        <h2>Our Cooling Solutions</h2>
+        <p>Air Conditioners, Fans, Coolers, and Refrigerants for comfortable living and business.</p>
+
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label for="categoryFilter">Category</label>
+                <select id="categoryFilter">
+                    <option value="all">All Products</option>
+                    <option value="AC-Non-Inverter">AC (Non-Inverter)</option>
+                    <option value="AC-Inverter">AC (Inverter)</option>
+                    <option value="Outdoor-Cooler">Outdoor Coolers</option>
+                    <option value="Bladeless-Fan">Bladeless Fans</option>
+                    <option value="Refrigerant">Refrigerants</option>
+                    <option value="Fan">Other Fans</option>
+                </select>
+            </div>
+            
+            <div class="filter-group price-range-group">
+                <label for="priceRange">Max Price: ₵<span id="priceValue">13000</span></label>
+                <input type="range" id="priceRange" min="1000" max="13000" step="100" value="13000" />
+            </div>
+
+            <div class="filter-group">
+                <label for="searchInput">Product Name</label>
+                <input type="text" id="searchInput" placeholder="Search product..." />
+            </div>
+
+            <div class="filter-group">
+                <label for="sortBy">Sort Order</label>
+                <select id="sortBy">
+                    <option value="default">Default</option>
+                    <option value="lowToHigh">Price: Low &rarr; High</option>
+                    <option value="highToLow">Price: High &rarr; Low</option>
+                    <option value="nameAsc">Name: A &rarr; Z</option>
+                </select>
+            </div>
+            
+            <button id="clearFilters">Clear Filters</button>
+        </div>
+        
+        <div class="pagination-controls" id="topPagination">
+            <label for="itemsPerPage">Items per page:</label>
+            <select id="itemsPerPage" onchange="filterProducts()">
+                <option value="8">8</option>
+                <option value="12">12</option>
+                <option value="16">16</option>
+                <option value="all">All</option>
+            </select>
+            <span>Showing <span id="currentStart">1</span>-<span id="currentEnd">8</span> of <span id="totalProducts">16</span> products.</span>
+            <div>
+                <button id="prevPage" disabled>&larr; Previous</button>
+                <button id="nextPage">&rarr; Next</button>
+            </div>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+        </div>
+        
+        <div class="pagination-controls" id="bottomPagination">
+             <span>Showing <span id="currentStartBottom">1</span>-<span id="currentEndBottom">8</span> of <span id="totalProductsBottom">16</span> products.</span>
+            <div>
+                <button id="prevPageBottom" disabled>&larr; Previous</button>
+                <button id="nextPageBottom">&rarr; Next</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Genix Cool. All rights reserved. | <a href="privacy.html">Privacy Policy</a></p>
+    </footer>
+
+    <script>
+        // === Product Data (Wholesale/Retail corrected for Bladeless Fans) ===
+        const products = [
+            { id: 1, name: "12000 BTU (1.5 HP) AC", category: "AC-Non-Inverter", retail: 4050, wholesale: 3950, image: "12k_btu_ac..jpg" },
+            { id: 2, name: "18000 BTU (2 HP) AC", category: "AC-Non-Inverter", retail: 6000, wholesale: 5600, image: "18k_btu_ac.jpg" },
+            { id: 3, name: "24000 BTU (2.5 HP) AC", category: "AC-Non-Inverter", retail: 8000, wholesale: 7500, image: "AC_2_5HP_NonInverter.jpg" },
+            { id: 4, name: "2.5 HP Standing AC", category: "AC-Non-Inverter", retail: 12500, wholesale: 11800, image: "AC_Standing_2_5HP.jpg" },
+            { id: 5, name: "Outdoor Mist Fan", category: "Outdoor-Cooler", retail: 2500, wholesale: 2300, image: "outdoor_mist_fan.jpg" },
+            { id: 6, name: "12000 BTU (1.5 HP) AC – Inverter", category: "AC-Inverter", retail: 5800, wholesale: 5500, image: "AC_1_5HP_Inverter.jpg" },
+            { id: 7, name: "18000 BTU (2 HP) AC – Inverter", category: "AC-Inverter", retail: 7500, wholesale: 7000, image: "AC_2HP_Inverter.jpg" },
+            { id: 8, name: "24000 BTU (2.5 HP) AC – Inverter", category: "AC-Inverter", retail: 9500, wholesale: 8800, image: "AC_2_5HP_Inverter.jpg" },
+            { id: 9, name: "Stellair Outdoor Cooler", category: "Outdoor-Cooler", retail: 4200, wholesale: 3800, image: "Stellair_Cooler.jpg" },
+            { id: 10, name: "Nano Outdoor Cooler", category: "Outdoor-Cooler", retail: 3600, wholesale: 3200, image: "outdoor_cooler.jpg" },
+            { id: 11, name: "Legacy Outdoor Cooler", category: "Outdoor-Cooler", retail: 4500, wholesale: 4000, image: "Legacy_Cooler.jpg" },
+            { id: 12, name: "Punch Outdoor Cooler", category: "Outdoor-Cooler", retail: 3200, wholesale: 3000, image: "Punch_Cooler.jpg" },
+            // Prices corrected: Wholesale should be less than Retail
+            { id: 13, name: "Bladeless Genix Fan 011", category: "Bladeless-Fan", retail: 1300, wholesale: 1150, image: "Bladeless_Genix_Fan_011.jpg" }, 
+            { id: 14, name: "Bladeless Genix Fan 012", category: "Bladeless-Fan", retail: 1400, wholesale: 1250, image: "Bladeless_Genix_Fan_012.jpg" }, 
+            { id: 15, name: "Refrigerant R-134a", category: "Refrigerant", retail: 1700, wholesale: 1600, image: "Refrigerant_R134a.jpg" },
+            { id: 16, name: "Refrigerant R-22", category: "Refrigerant", retail: 1400, wholesale: 1300, image: "Refrigerant_R22.jpg" },
+        ];
+
+        // === Cart System (Unchanged, but included for completeness) ===
+        const getCart = () => JSON.parse(localStorage.getItem("cart")) || [];
+        const saveCart = (cart) => localStorage.setItem("cart", JSON.stringify(cart));
+        const updateCartCount = () => {
+            const cart = getCart();
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById("cartCount").innerText = count;
+        };
+
+        function addToCart(id, name, price, image) {
+            const cart = getCart();
+            const existing = cart.find(item => item.id === id);
+            if (existing) existing.quantity++;
+            else cart.push({ id, name, price, image, quantity: 1 });
+            saveCart(cart);
+            updateCartCount();
+            alert(`${name} added to cart!`);
+        }
+
+        // === Filtering, Sorting, and Pagination System (Enhanced) ===
+        const grid = document.getElementById("productGrid");
+        const categoryFilter = document.getElementById("categoryFilter");
+        const priceRange = document.getElementById("priceRange");
+        const priceValue = document.getElementById("priceValue");
+        const searchInput = document.getElementById("searchInput");
+        const sortBy = document.getElementById("sortBy");
+        const clearFiltersButton = document.getElementById("clearFilters");
+        const itemsPerPageSelect = document.getElementById("itemsPerPage");
+        
+        let currentPage = 1;
+        let itemsPerPage = 8; // Default value
+        let currentFilteredProducts = [];
+
+        // Helper function to create a clean filename (slug) for linking
+        const createSlug = (name) => {
+            return name.toLowerCase()
+                       .replace(/[\s\.\,\/]+/g, '_')
+                       .replace(/[\(\)]/g, '')
+                       + '.html';
+        };
+
+        // Renders the products currently visible on the page
+        function displayProducts(items) {
+            grid.innerHTML = "";
+            const totalItems = items.length;
+            
+            // Handle pagination slice
+            const perPage = itemsPerPageSelect.value === 'all' ? totalItems : parseInt(itemsPerPageSelect.value);
+            const start = (currentPage - 1) * perPage;
+            const end = (perPage === totalItems) ? totalItems : Math.min(start + perPage, totalItems);
+            const itemsToDisplay = items.slice(start, end);
+
+            if (!itemsToDisplay.length) {
+                grid.innerHTML = "<p style='padding: 20px; color: #ddd; grid-column: 1 / -1;'>No products found matching your criteria.</p>";
+                updatePaginationDisplay(0, 0, 0);
+                return;
+            }
+
+            itemsToDisplay.forEach(p => {
+                const card = document.createElement("div");
+                card.classList.add("product");
+                card.setAttribute("data-category", p.category);
+                card.setAttribute("data-price", p.retail);
+                
+                const productLink = createSlug(p.name); 
+                
+                card.innerHTML = `
+                    <a href="${productLink}">
+                        <img src="${p.image}" alt="${p.name}" loading="lazy" />
+                    </a>
+                    
+                    <a href="${productLink}">
+                        <h3>${p.name}</h3>
+                    </a>
+                    
+                    <div class="price-info">
+                        <span class="retail-price">Retail: ₵${p.retail.toLocaleString()}</span>
+                        <span class="wholesale-price-tag">Wholesale: ₵${p.wholesale.toLocaleString()}</span>
+                    </div>
+                    <button onclick="addToCart(${p.id}, '${p.name}', ${p.retail}, '${p.image}')">Add to Cart</button>
+                `;
+                grid.appendChild(card);
+            });
+            
+            updatePaginationDisplay(start + 1, end, totalItems);
+        }
+        
+        // Updates pagination button states and text
+        function updatePaginationDisplay(start, end, total) {
+            const perPage = itemsPerPageSelect.value === 'all' ? total : parseInt(itemsPerPageSelect.value);
+            const totalPages = Math.ceil(total / perPage);
+            
+            const prevBtns = [document.getElementById("prevPage"), document.getElementById("prevPageBottom")];
+            const nextBtns = [document.getElementById("nextPage"), document.getElementById("nextPageBottom")];
+            const startSpans = [document.getElementById("currentStart"), document.getElementById("currentStartBottom")];
+            const endSpans = [document.getElementById("currentEnd"), document.getElementById("currentEndBottom")];
+            const totalSpans = [document.getElementById("totalProducts"), document.getElementById("totalProductsBottom")];
+            
+            // Update text
+            startSpans.forEach(span => span.textContent = start);
+            endSpans.forEach(span => span.textContent = end);
+            totalSpans.forEach(span => span.textContent = total);
+
+            // Update button states
+            prevBtns.forEach(btn => btn.disabled = currentPage === 1);
+            nextBtns.forEach(btn => btn.disabled = currentPage === totalPages || total === 0 || perPage === total);
+            
+            // Hide pagination if all products are shown
+            const visibility = (itemsPerPageSelect.value === 'all' || total <= perPage) ? 'none' : 'flex';
+            document.getElementById("topPagination").style.display = visibility;
+            document.getElementById("bottomPagination").style.display = visibility;
+
+            // Update items per page display consistency
+            if(itemsPerPageSelect.value === 'all') {
+                 document.getElementById("topPagination").querySelector('span:nth-child(2)').textContent = `Showing all ${total} products.`;
+                 document.getElementById("bottomPagination").querySelector('span:nth-child(1)').textContent = `Showing all ${total} products.`;
+            } else {
+                 document.getElementById("topPagination").querySelector('span:nth-child(2)').textContent = `Showing ${start}-${end} of ${total} products.`;
+                 document.getElementById("bottomPagination").querySelector('span:nth-child(1)').textContent = `Showing ${start}-${end} of ${total} products.`;
+            }
+        }
+        
+        function filterProducts() {
+            let filtered = products.filter(p =>
+                (categoryFilter.value === "all" || p.category === categoryFilter.value) &&
+                p.retail <= +priceRange.value &&
+                p.name.toLowerCase().includes(searchInput.value.toLowerCase())
+            );
+
+            // Apply Sorting
+            switch (sortBy.value) {
+                case "lowToHigh":
+                    filtered.sort((a, b) => a.retail - b.retail);
+                    break;
+                case "highToLow":
+                    filtered.sort((a, b) => b.retail - a.retail);
+                    break;
+                case "nameAsc":
+                    filtered.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                // 'default' doesn't require a sort
+            }
+
+            // Reset page number on filter/sort change
+            currentPage = 1;
+            currentFilteredProducts = filtered;
+            displayProducts(currentFilteredProducts);
+        }
+        
+        function changePage(direction) {
+            const perPage = itemsPerPageSelect.value === 'all' ? currentFilteredProducts.length : parseInt(itemsPerPageSelect.value);
+            const totalPages = Math.ceil(currentFilteredProducts.length / perPage);
+            
+            if (direction === 'next' && currentPage < totalPages) {
+                currentPage++;
+            } else if (direction === 'prev' && currentPage > 1) {
+                currentPage--;
+            }
+            
+            displayProducts(currentFilteredProducts);
+        }
+
+        // === Event Listeners ===
+        categoryFilter.addEventListener("change", filterProducts);
+        searchInput.addEventListener("input", filterProducts);
+        sortBy.addEventListener("change", filterProducts);
+        itemsPerPageSelect.addEventListener("change", filterProducts);
+        
+        priceRange.addEventListener("input", () => {
+            priceValue.textContent = priceRange.value;
+            filterProducts();
+        });
+        
+        clearFiltersButton.addEventListener("click", () => {
+            categoryFilter.value = "all";
+            searchInput.value = "";
+            sortBy.value = "default";
+            priceRange.value = priceRange.max; // Set to the max range
+            priceValue.textContent = priceRange.max;
+            itemsPerPageSelect.value = "8";
+            currentPage = 1;
+            filterProducts();
+        });
+
+        document.getElementById("nextPage").addEventListener("click", () => changePage('next'));
+        document.getElementById("prevPage").addEventListener("click", () => changePage('prev'));
+        document.getElementById("nextPageBottom").addEventListener("click", () => changePage('next'));
+        document.getElementById("prevPageBottom").addEventListener("click", () => changePage('prev'));
+        
+
+        // === Initial Load ===
+        filterProducts(); // Initial product display
+        updateCartCount();
+        window.addEventListener("storage", updateCartCount);
+    </script>
+</body>
+</html>
