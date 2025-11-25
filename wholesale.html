@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wholesale B2B Portal | Genix Cool</title>
+    <style>
+        /* === SHARED STYLES (FROM HOME/SHOP) === */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0a0a; 
+            color: #f5f5f5; 
+            line-height: 1.6;
+        }
+        a {
+            text-decoration: none;
+            color: gold;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #fff;
+        }
+        header {
+            background-color: #111;
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        header h1 {
+            font-size: 1.8em;
+            color: gold;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        /* Highlight B2B for portal feel */
+        header h1 span {
+            font-size: 0.5em;
+            vertical-align: super;
+            margin-left: 5px;
+            color: #fff;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+        nav a {
+            color: white;
+            font-weight: 500;
+            padding: 5px 0;
+        }
+        nav a:hover, nav a.active {
+            color: gold;
+            border-bottom: 2px solid gold;
+        }
+        .shop-section {
+            padding: 50px 30px 20px;
+            text-align: center;
+        }
+        .shop-section h2 {
+            color: gold;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        .shop-section p {
+            color: #ccc;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        /* === B2B SPECIFIC FILTERS & GRID === */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            background: #1a1a1a;
+            padding: 20px; 
+            border-radius: 10px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            text-align: left; 
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 180px; 
+            flex-grow: 1;
+            padding-bottom: 10px; 
+        }
+        .filter-bar label {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+        .filter-bar select, .filter-bar input:not([type="range"]), .filter-bar button {
+            background: #0a0a0a;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: inherit;
+            width: 100%; 
+            outline: none;
+            transition: border 0.3s, background 0.3s;
+            box-sizing: border-box; 
+        }
+        
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .product {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        .product img {
+            width: 100%;
+            height: 180px; /* Slightly smaller to make room for B2B controls */
+            object-fit: contain; 
+            border-radius: 10px;
+            background: #222; 
+        }
+        .product h3 {
+            color: white; /* B2B product name is less emphasized */
+            margin-top: 15px;
+            font-size: 1.2em;
+        }
+
+        /* Price display */
+        .price-info {
+            line-height: 1.4;
+            margin: 10px 0;
+            border-top: 1px solid #333;
+            padding-top: 10px;
+        }
+        .wholesale-price {
+            font-weight: bold;
+            color: gold; /* Highlight the wholesale price */
+            font-size: 1.3em;
+            display: block;
+        }
+        .moq-tag {
+            font-size: 0.8em;
+            color: #ccc;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        /* B2B Quantity & CTA */
+        .b2b-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center;
+        }
+        .b2b-controls input[type="number"] {
+            width: 80px;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid gold;
+            border-radius: 5px;
+            background: #0a0a0a;
+            color: white;
+            font-size: 1em;
+            -moz-appearance: textfield; /* Hide arrows in Firefox */
+        }
+        .b2b-controls input[type="number"]::-webkit-outer-spin-button,
+        .b2b-controls input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Hide arrows in Chrome/Safari */
+            margin: 0;
+        }
+        .b2b-controls button {
+            flex-grow: 1;
+            background: gold;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .b2b-controls button:hover {
+            background: #fff;
+            color: #111;
+        }
+
+        /* Pagination and Footer styles (kept identical for consistency) */
+        .pagination-controls { /* ... same as shop.html */ }
+        footer { /* ... same as shop.html */ }
+        .footer-column { /* ... same as shop.html */ }
+        .copyright { /* ... same as shop.html */ }
+
+        @media (max-width: 600px) {
+            .b2b-controls {
+                flex-direction: column;
+            }
+            .b2b-controls input[type="number"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Genix Cool<span>B2B</span></h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Retail Shop</a></li>
+                <li><a href="b2b_shop.html" class="active">Wholesale Portal</a></li>
+                <li><a href="b2b_account.html">Account</a></li> 
+                <li><a href="b2b_cart.html">📦 Cart (<span id="cartCount">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="shop-section">
+        <h2>Wholesale Cooling Solutions for Business</h2>
+        <p>Exclusive wholesale pricing and bulk ordering for certified Genix Cool partners.</p>
+
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label for="categoryFilter">Category</label>
+                <select id="categoryFilter">
+                    <option value="all">All Products</option>
+                    <option value="AC-Non-Inverter">AC (Non-Inverter)</option>
+                    <option value="AC-Inverter">AC (Inverter)</option>
+                    <option value="Outdoor-Cooler">Outdoor Coolers</option>
+                    <option value="Refrigerant">Refrigerants</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="minOrderFilter">Minimum Order QTY</label>
+                <select id="minOrderFilter">
+                    <option value="1">Any (1+)</option>
+                    <option value="5">Bulk (5+)</option>
+                    <option value="10">Pallet (10+)</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="maxPriceFilter">Max Unit Price: ₵<span id="priceValue">13000</span></label>
+                <input type="range" id="maxPriceFilter" min="1000" max="13000" step="100" value="13000" />
+            </div>
+
+            <div class="filter-group">
+                <label for="searchInput">Search Product</label>
+                <input type="text" id="searchInput" placeholder="Search product..." />
+            </div>
+            
+            <div class="filter-group">
+                <label for="sortBy">Sort Order</label>
+                <select id="sortBy">
+                    <option value="default">Default</option>
+                    <option value="lowToHigh">Price: Low &rarr; High</option>
+                    <option value="highToLow">Price: High &rarr; Low</option>
+                </select>
+            </div>
+            
+            <button id="clearFilters">Clear Filters</button>
+        </div>
+        
+        <div class="pagination-controls" id="topPagination">
+             </div>
+
+        <div class="product-grid" id="productGrid">
+        </div>
+        
+        <div class="pagination-controls" id="bottomPagination">
+             </div>
+    </section>
+
+    <footer>
+        <div class="footer-column">
+            <h4>Genix Cool</h4>
+            <p>Leading the way in efficient and affordable cooling solutions since 2015.</p>
+        </div>
+        <div class="footer-column">
+            <h4>Wholesale Links</h4>
+            <ul>
+                <li><a href="b2b_login.html">B2B Login</a></li>
+                <li><a href="b2b_orders.html">View Orders</a></li>
+                <li><a href="b2b_faq.html">Wholesale FAQ</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Customer Service</h4>
+            <ul>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="returns.html">Returns Policy</a></li>
+                <li><a href="shipping.html">Shipping Info</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Legal</h4>
+            <ul>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms of Service</a></li>
+            </ul>
+        </div>
+        <div class="copyright">
+            <p>&copy; <span id="year-footer">2025</span> Genix Cool. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year-footer').textContent = new Date().getFullYear();
+        
+        // === Product Data (Added MOQ for B2B) ===
+        const products = [
+            { id: 1, name: "12000 BTU (1.5 HP) AC", category: "AC-Non-Inverter", retail: 4050, wholesale: 3950, moq: 5, image: "12k_btu_ac..jpg" },
+            { id: 2, name: "18000 BTU (2 HP) AC", category: "AC-Non-Inverter", retail: 6000, wholesale: 5600, moq: 3, image: "18k_btu_ac.jpg" },
+            { id: 3, name: "24000 BTU (2.5 HP) AC", category: "AC-Non-Inverter", retail: 8000, wholesale: 7500, moq: 2, image: "AC_2_5HP_NonInverter.jpg" },
+            { id: 4, name: "2.5 HP Standing AC", category: "AC-Non-Inverter", retail: 12500, wholesale: 11800, moq: 1, image: "AC_Standing_2_5HP.jpg" },
+            { id: 5, name: "Outdoor Mist Fan", category: "Outdoor-Cooler", retail: 2500, wholesale: 2300, moq: 10, image: "outdoor_mist_fan.jpg" },
+            { id: 6, name: "12000 BTU (1.5 HP) AC – Inverter", category: "AC-Inverter", retail: 5800, wholesale: 5500, moq: 4, image: "AC_1_5HP_Inverter.jpg" },
+            { id: 7, name: "18000 BTU (2 HP) AC – Inverter", category: "AC-Inverter", retail: 7500, wholesale: 7000, moq: 3, image: "AC_2HP_Inverter.jpg" },
+            { id: 8, name: "24000 BTU (2.5 HP) AC – Inverter", category: "AC-Inverter", retail: 9500, wholesale: 8800, moq: 2, image: "AC_2_5HP_Inverter.jpg" },
+            { id: 15, name: "Refrigerant R-134a (Bulk)", category: "Refrigerant", retail: 1700, wholesale: 1600, moq: 20, image: "Refrigerant_R134a.jpg" },
+            { id: 16, name: "Refrigerant R-22 (Bulk)", category: "Refrigerant", retail: 1400, wholesale: 1300, moq: 20, image: "Refrigerant_R22.jpg" },
+        ];
+        
+        // Exclude fans as they are less common for B2B bulk purchases
+        // For a true B2B site, these products would likely be separated in the database.
+
+        // === Cart System (Modified for B2B/Wholesale Price) ===
+        const getCart = () => JSON.parse(localStorage.getItem("b2b_cart")) || [];
+        const saveCart = (cart) => localStorage.setItem("b2b_cart", JSON.stringify(cart));
+        const updateCartCount = () => {
+            const cart = getCart();
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById("cartCount").innerText = count;
+        };
+
+        function addToCart(id, name, wholesalePrice, image, moq) {
+            const quantityInput = document.getElementById(`qty-${id}`);
+            let quantity = parseInt(quantityInput.value);
+
+            if (isNaN(quantity) || quantity < moq) {
+                alert(`Minimum order quantity for ${name} is ${moq}. Please adjust your quantity.`);
+                quantityInput.value = moq; // Reset to MOQ
+                return;
+            }
+            
+            const cart = getCart();
+            const existing = cart.find(item => item.id === id);
+            
+            if (existing) {
+                // If item exists, add to existing quantity
+                existing.quantity += quantity;
+            } else {
+                // If new item, add with the current quantity
+                cart.push({ id, name, price: wholesalePrice, image, quantity: quantity });
+            }
+            
+            saveCart(cart);
+            updateCartCount();
+            alert(`${quantity} units of ${name} added to wholesale cart!`);
+            quantityInput.value = moq; // Reset quantity input after adding to cart
+        }
+
+        // === Filtering, Sorting, and Pagination System ===
+        const grid = document.getElementById("productGrid");
+        const categoryFilter = document.getElementById("categoryFilter");
+        const priceRange = document.getElementById("maxPriceFilter");
+        const priceValue = document.getElementById("priceValue");
+        const searchInput = document.getElementById("searchInput");
+        const sortBy = document.getElementById("sortBy");
+        const clearFiltersButton = document.getElementById("clearFilters");
+        const minOrderFilter = document.getElementById("minOrderFilter");
+        
+        let currentPage = 1;
+        const itemsPerPage = 8; // Fixed for B2B to keep list manageable
+        let currentFilteredProducts = [];
+
+        const createSlug = (name) => {
+            return name.toLowerCase()
+                       .replace(/[\s\.\,\/]+/g, '_')
+                       .replace(/[\(\)]/g, '')
+                       + '_b2b.html';
+        };
+
+        function displayProducts(items) {
+            grid.innerHTML = "";
+            const totalItems = items.length;
+            
+            // Pagination logic
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = Math.min(start + itemsPerPage, totalItems);
+            const itemsToDisplay = items.slice(start, end);
+
+            if (!itemsToDisplay.length) {
+                grid.innerHTML = "<p style='padding: 20px; color: #ddd; grid-column: 1 / -1;'>No wholesale products found matching your criteria.</p>";
+                updatePaginationDisplay(0, 0, 0);
+                return;
+            }
+
+            itemsToDisplay.forEach(p => {
+                const card = document.createElement("div");
+                card.classList.add("product");
+                
+                const productLink = createSlug(p.name); 
+                
+                card.innerHTML = `
+                    <a href="${productLink}">
+                        <img src="${p.image}" alt="${p.name}" loading="lazy" />
+                    </a>
+                    
+                    <a href="${productLink}">
+                        <h3>${p.name}</h3>
+                    </a>
+                    
+                    <div class="price-info">
+                        <span class="wholesale-price">Unit Price: ₵${p.wholesale.toLocaleString()}</span>
+                        <span class="moq-tag">Minimum Order: ${p.moq} Units</span>
+                    </div>
+                    <div class="b2b-controls">
+                        <input type="number" id="qty-${p.id}" value="${p.moq}" min="${p.moq}" step="1" title="Order Quantity"/>
+                        <button onclick="addToCart(${p.id}, '${p.name}', ${p.wholesale}, '${p.image}', ${p.moq})">Add Bulk to Cart</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            updatePaginationDisplay(start + 1, end, totalItems);
+        }
+        
+        // Updates pagination button states and text (kept mostly same as shop.html)
+        function updatePaginationDisplay(start, end, total) {
+            const totalPages = Math.ceil(total / itemsPerPage);
+            
+            const prevBtns = [document.getElementById("prevPage"), document.getElementById("prevPageBottom")];
+            const nextBtns = [document.getElementById("nextPage"), document.getElementById("nextPageBottom")];
+            
+            // Clear previous content
+            document.getElementById("topPagination").innerHTML = '';
+            document.getElementById("bottomPagination").innerHTML = '';
+
+            if (total > 0) {
+                 const controlsHtml = `
+                    <span>Showing ${start}-${end} of ${total} products.</span>
+                    <div>
+                        <button id="prevPage" ${currentPage === 1 ? 'disabled' : ''}>&larr; Previous</button>
+                        <button id="nextPage" ${currentPage === totalPages || total === end ? 'disabled' : ''}>Next &rarr;</button>
+                    </div>
+                `;
+                document.getElementById("topPagination").innerHTML = controlsHtml;
+                document.getElementById("bottomPagination").innerHTML = controlsHtml;
+
+                // Re-attach listeners dynamically
+                document.getElementById("topPagination").querySelector('#nextPage').addEventListener("click", () => changePage('next'));
+                document.getElementById("topPagination").querySelector('#prevPage').addEventListener("click", () => changePage('prev'));
+                document.getElementById("bottomPagination").querySelector('#nextPage').addEventListener("click", () => changePage('next'));
+                document.getElementById("bottomPagination").querySelector('#prevPage').addEventListener("click", () => changePage('prev'));
+            } else {
+                 document.getElementById("topPagination").innerHTML = `<span>No products found.</span>`;
+                 document.getElementById("bottomPagination").innerHTML = `<span>No products found.</span>`;
+            }
+        }
+        
+        function filterProducts() {
+            const minMoq = parseInt(minOrderFilter.value);
+
+            let filtered = products.filter(p =>
+                (categoryFilter.value === "all" || p.category === categoryFilter.value) &&
+                p.wholesale <= +priceRange.value && // Filter by wholesale price
+                p.moq >= minMoq && // B2B MOQ filter
+                p.name.toLowerCase().includes(searchInput.value.toLowerCase())
+            );
+
+            switch (sortBy.value) {
+                case "lowToHigh": filtered.sort((a, b) => a.wholesale - b.wholesale); break;
+                case "highToLow": filtered.sort((a, b) => b.wholesale - a.wholesale); break;
+            }
+
+            currentPage = 1;
+            currentFilteredProducts = filtered;
+            displayProducts(currentFilteredProducts);
+        }
+        
+        function changePage(direction) {
+            const totalPages = Math.ceil(currentFilteredProducts.length / itemsPerPage);
+            
+            if (direction === 'next' && currentPage < totalPages) currentPage++;
+            else if (direction === 'prev' && currentPage > 1) currentPage--;
+            
+            displayProducts(currentFilteredProducts);
+        }
+
+        // === Event Listeners and Initial Setup ===
+        categoryFilter.addEventListener("change", filterProducts);
+        searchInput.addEventListener("input", filterProducts);
+        sortBy.addEventListener("change", filterProducts);
+        minOrderFilter.addEventListener("change", filterProducts);
+
+        priceRange.addEventListener("input", () => {
+            priceValue.textContent = priceRange.value;
+            filterProducts();
+        });
+        
+        clearFiltersButton.addEventListener("click", () => {
+            categoryFilter.value = "all";
+            searchInput.value = "";
+            sortBy.value = "default";
+            minOrderFilter.value = "1";
+            priceRange.value = priceRange.max; 
+            priceValue.textContent = priceRange.max;
+            currentPage = 1;
+            filterProducts();
+        });
+        
+        // Initial load
+        filterProducts(); 
+        updateCartCount();
+        window.addEventListener("storage", updateCartCount);
+    </script>
+</body>
+</html>
+```
