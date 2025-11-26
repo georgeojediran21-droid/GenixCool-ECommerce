@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2.5 HP Standing AC | Genix cool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Consistent dark theme and navigation styles */
+        body { background: #0a0a0a; color: #f5f5f5; font-family: sans-serif; }
+        header { padding: 20px; text-align: center; }
+        nav { display: flex; justify-content: center; gap: 25px; background: #111; padding: 12px 0; }
+        nav a { color: gold; text-decoration: none; font-weight: bold; transition: 0.3s; }
+        nav a:hover { color: #fff; transform: scale(1.1); }
+        button:hover { background: #c6a700 !important; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="cart.html">View Cart</a>
+        </nav>
+    </header>
+
+    <main style="padding: 80px 40px; max-width: 1100px; margin: 0 auto; display: flex; gap: 40px; align-items: flex-start; text-align: left;">
+        <div style="flex: 1; max-width: 50%; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);">
+            <img src="standing_ac.jpg" alt="Commercial 2.5 HP Standing Air Conditioner" style="width: 100%; height: auto; display: block;">
+        </div>
+        <div style="flex: 1; max-width: 50%;">
+            <h2 style="color: gold; font-size: 2.5rem; margin-top: 0; margin-bottom: 15px;">2.5 HP Floor Standing Air Conditioner</h2>
+            <p style="font-size: 1.5rem; font-weight: bold; color: #fff; margin-bottom: 20px;">Retail: ₵12,500 | Wholesale: ₵11,800</p>
+            <p><strong>Product Quality and Assurance:</strong> A robust, vertically designed unit perfect for large halls, offices, or restaurants. Its floor-standing design allows for powerful air throw and easy installation. Known for its quick-cooling capabilities and stable operation under heavy use.</p>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #333;">
+                <h3 style="color: gold; font-size: 1.5rem; margin-bottom: 15px;">Key Specifications</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Cooling Capacity:</strong> 30,000 BTU (2.5 Horsepower)</li>
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Design:</strong> Vertical Floor Standing</li>
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Airflow:</strong> Wide-angle vertical and horizontal swing</li>
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Application:</strong> Commercial and Large Residential</li>
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Warranty:</strong> 2 Years Full Coverage</li>
+                </ul>
+            </div>
+            
+            <button style="background: gold; color: #111; border: none; padding: 15px 30px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 20px; width: 100%; max-width: 300px;" onclick="addToCart('2.5 HP Standing AC', 12500)">Add to Cart</button>
+        </div>
+    </main>
+
+<script>
+    function addToCart(productName, retailPrice) {
+        // 1. Retrieve the current cart from local storage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // 2. Define the new item
+        const newItem = {
+            // Unique ID for this product
+            id: '2_5hp_standing_ac', 
+            name: productName,
+            price: retailPrice,
+            quantity: 1
+        };
+
+        // 3. Check if the item is already in the cart
+        const existingItemIndex = cart.findIndex(item => item.id === newItem.id);
+
+        if (existingItemIndex > -1) {
+            // If it exists, safely increment the quantity
+            cart[existingItemIndex].quantity = Number(cart[existingItemIndex].quantity) + 1;
+        } else {
+            // If it's new, add it to the cart
+            cart.push(newItem);
+        }
+
+        // 4. Save the updated cart back to local storage
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // 5. Redirect the user to the cart/checkout page
+        alert(`✅ ${productName} added to cart! Redirecting to checkout...`);
+        window.location.href = 'cart.html';
+    }
+</script>
+
+</body>
+</html>
