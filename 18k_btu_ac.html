@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>18000 BTU (2 HP) Air Condition | Genix cool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Styles derived from the previous checkout/product pages for consistency */
+        body { background: #0a0a0a; color: #f5f5f5; font-family: sans-serif; }
+        header { padding: 20px; text-align: center; }
+        nav { display: flex; justify-content: center; gap: 25px; background: #111; padding: 12px 0; }
+        nav a { color: gold; text-decoration: none; font-weight: bold; transition: 0.3s; }
+        nav a:hover { color: #fff; transform: scale(1.1); }
+        button:hover { background: #c6a700 !important; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="cart.html">View Cart</a>
+        </nav>
+    </header>
+
+    <main style="padding: 80px 40px; max-width: 1100px; margin: 0 auto; display: flex; gap: 40px; align-items: flex-start; text-align: left;">
+        <div style="flex: 1; max-width: 50%; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);">
+            <img src="18k_btu_ac.jpg" alt="Powerful 18000 BTU Air Conditioner" style="width: 100%; height: auto; display: block;">
+        </div>
+        <div style="flex: 1; max-width: 50%;">
+            <h2 style="color: gold; font-size: 2.5rem; margin-top: 0; margin-bottom: 15px;">18000 BTU (2 HP) Standard Split AC</h2>
+            <p style="font-size: 1.5rem; font-weight: bold; color: #fff; margin-bottom: 20px;">Retail: ₵6,000 | Wholesale: ₵5,600</p>
+            <p><strong>Product Quality and Assurance:</strong> Designed for **larger rooms** and **commercial spaces**, this powerful 18000 BTU unit provides rapid, consistent cooling. It features heavy-duty compressors and a durable build, ensuring reliability during peak temperatures. Ideal for long-lasting, industrial-grade performance.</p>
+            
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #333;">
+                <h3 style="color: gold; font-size: 1.5rem; margin-bottom: 15px;">Key Specifications</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Cooling Capacity:</strong> 18,000 BTU (2 Horsepower)</li>
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Technology:</strong> Standard Rotary Compressor</li>
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Feature:</strong> Turbo Cooling Mode</li>
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Noise Level:</strong> Low dB indoor unit</li>
+                    <li style="margin-bottom: 10px; color: #ddd;"><strong>Warranty:</strong> 1 Year Comprehensive + 3 Years Compressor</li>
+                </ul>
+            </div>
+            
+            <button style="background: gold; color: #111; border: none; padding: 15px 30px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 20px; width: 100%; max-width: 300px;" onclick="addToCart('18000 BTU AC', 6000)">Add to Cart</button>
+        </div>
+    </main>
+
+<script>
+    function addToCart(productName, retailPrice) {
+        // 1. Retrieve the current cart from local storage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // 2. Define the new item
+        const newItem = {
+            // Using a unique ID specific to this 18k BTU product
+            id: '18k_btu_ac', 
+            name: productName,
+            price: retailPrice,
+            quantity: 1
+        };
+
+        // 3. Check if the item is already in the cart
+        const existingItemIndex = cart.findIndex(item => item.id === newItem.id);
+
+        if (existingItemIndex > -1) {
+            // If it exists, increment the quantity
+            cart[existingItemIndex].quantity = Number(cart[existingItemIndex].quantity) + 1;
+        } else {
+            // If it's new, add it to the cart
+            cart.push(newItem);
+        }
+
+        // 4. Save the updated cart back to local storage
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // 5. Redirect the user to the cart/checkout page
+        alert(`✅ ${productName} added to cart! Redirecting to checkout...`);
+        window.location.href = 'cart.html';
+    }
+</script>
+
+</body>
+</html>
