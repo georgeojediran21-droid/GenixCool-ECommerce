@@ -8,94 +8,841 @@
     <meta property="og:title" content="Genix cool | Premium Electronics & Cooling Solutions" />
     <meta property="og:description" content="Genix cool — curated electronics and accessories for modern living. Advanced cooling technology at wholesale and retail prices." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="070ddc6b-5479-444a-a6fc-7444d01ed32d.jpeg" />
     <meta property="og:url" content="https://yourwebsite.com" />
     <title>Genix cool | Advanced Electronics & AC</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    
+
     <style>
-        /* Custom styles for hover effects and structure missing in inline HTML */
-        .category:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 30px rgba(245, 199, 0, 0.25) !important;
-            background-color: #1a1a1a !important; /* Slightly lift background on hover */
+        :root {
+            --gold: #f5c700;
+            --gold-light: #ffda47;
+            --black: #000;
+            --dark1: #050505;
+            --dark2: #080808;
+            --dark3: #111;
+            --dark4: #1a1a1a;
+            --dark5: #222;
+            --border: #1a1a1a;
+            --text: #f5f5f5;
+            --text-muted: #aaa;
+            --text-light: #e0e0e0;
         }
-        .product:hover {
-            transform: translateY(-8px); /* Deeper lift */
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7) !important;
-            border-color: #f5c700; /* Subtle gold border highlight */
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            background-color: var(--black);
+            color: var(--text);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            overflow-x: hidden;
         }
-        .hover-link:hover {
-            color: #f5c700 !important;
+
+        /* ===== ANNOUNCEMENT BAR ===== */
+        .announcement-bar {
+            background-color: var(--gold);
+            color: #000;
+            text-align: center;
+            padding: 10px 15px;
+            font-size: 0.95rem;
+            font-weight: 900;
+            letter-spacing: 1px;
         }
-        .btn-primary-hover:hover {
-            background-color: #ffda47 !important; /* Lighter gold for high contrast */
+        .announcement-bar a {
+            color: #000;
+            text-decoration: underline;
+            font-weight: 900;
+        }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 5%;
+            border-bottom: 1px solid var(--border);
+            background-color: var(--black);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            gap: 15px;
+        }
+
+        .site-logo-text {
+            font-size: 2rem;
+            margin: 0;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 3px rgba(245,199,0,0.5);
+            white-space: nowrap;
+            font-weight: 900;
+        }
+
+        .desktop-nav {
+            flex-grow: 1;
+            margin-left: 50px;
+        }
+        .desktop-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: flex-start;
+            gap: 35px;
+        }
+        .desktop-nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+        .desktop-nav ul li a.active {
+            color: var(--gold);
+            font-weight: bold;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 6px;
+        }
+        .desktop-nav ul li a:hover { color: var(--gold); }
+
+        .header-icons {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+        .header-icons a {
+            color: #ddd;
+            font-size: 1.3rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .header-icons a:hover { color: var(--gold); }
+        .header-icons .cart-link {
+            color: var(--gold);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--gold);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Mobile Nav Drawer */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background-color: var(--dark4);
+            border-bottom: 2px solid var(--gold);
+            padding: 20px 5%;
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.3s;
+            font-weight: 600;
+        }
+        .mobile-nav a:last-child { border-bottom: none; }
+        .mobile-nav a.active,
+        .mobile-nav a:hover { color: var(--gold); }
+
+        /* ===== HERO CAROUSEL ===== */
+        .hero-carousel { margin-bottom: 60px; }
+
+        .carousel-item-inner {
+            background-color: var(--dark4);
+            height: 560px;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-item-inner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 100%);
+            z-index: 1;
+        }
+        .carousel-item-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+        .carousel-item-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+        }
+        .hero-label {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            letter-spacing: 3px;
+            display: block;
+        }
+        .hero-title {
+            color: #fff;
+            font-size: 3.8rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.1;
+            text-shadow: 0 0 20px rgba(0,0,0,0.9);
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .btn-gold {
+            background-color: var(--gold);
+            border-color: var(--gold);
+            color: #000;
+            font-weight: bold;
+            padding: 14px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            border: 2px solid var(--gold);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-gold:hover {
+            background-color: var(--gold-light);
             transform: scale(1.02);
+            color: #000;
         }
-        .btn-outline-hover:hover {
-            background-color: #f5c700 !important;
-            color: #000 !important;
+        .btn-outline-gold {
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 14px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            background: transparent;
+            text-decoration: none;
+            display: inline-block;
         }
-        /* Enhance the guarantee icons */
+        .btn-outline-gold:hover {
+            background-color: var(--gold);
+            color: #000;
+        }
+
+        /* ===== GUARANTEES ===== */
+        .guarantees {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 40px 5%;
+            background-color: var(--dark1);
+            margin-bottom: 60px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            gap: 20px;
+        }
+        .guarantee-item {
+            text-align: center;
+            transition: all 0.3s;
+            padding: 10px;
+        }
+        .guarantee-item i {
+            color: var(--gold);
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            display: block;
+            transition: all 0.3s;
+        }
         .guarantee-item:hover i {
             transform: scale(1.1);
-            color: #fff !important; /* White glow on icon */
-            text-shadow: 0 0 10px #f5c700;
+            color: #fff;
+            text-shadow: 0 0 10px var(--gold);
+        }
+        .guarantee-item p {
+            margin: 0;
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        /* ===== SECTIONS ===== */
+        .section-title {
+            display: inline-block;
+            padding-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 45px;
+        }
+        .section-title-white {
+            color: #fff;
+            border-bottom: 4px solid var(--gold);
+            font-size: 2.4rem;
+        }
+        .section-title-gold {
+            color: var(--gold);
+            border-bottom: 4px solid #fff;
+            font-size: 2.4rem;
+        }
+        .section-title-muted {
+            color: var(--text-muted);
+            border-bottom: 1px solid #333;
+            font-size: 1.8rem;
+        }
+
+        /* ===== CATEGORIES ===== */
+        .categories-section {
+            padding: 20px 5% 60px;
+            text-align: center;
+            background-color: var(--black);
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+        .category-card {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            background-color: var(--dark2);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            border: 1px solid #222;
+        }
+        .category-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(245,199,0,0.25);
+            background-color: var(--dark4);
+        }
+        .category-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            filter: brightness(0.85);
+        }
+        .category-card h3 {
+            font-size: 1.4rem;
+            padding: 20px;
+            color: var(--gold);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* ===== PRODUCTS ===== */
+        .bestsellers-section {
+            padding: 20px 5% 60px;
+            text-align: center;
+            background-color: var(--dark1);
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 30px;
+        }
+        .product-card {
+            background-color: var(--dark3);
+            padding: 22px;
+            border-radius: 12px;
+            border: 2px solid #222;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            text-align: left;
+            transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            border-color: var(--gold);
+        }
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 18px;
+        }
+        .product-badge {
+            padding: 5px 12px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .badge-gold { background-color: var(--gold); color: #000; }
+        .badge-blue { background-color: #007bff; color: #fff; }
+        .badge-green { background-color: #4CAF50; color: #fff; }
+        .badge-dark { background-color: #333; color: var(--text); }
+        .badge-leafgreen { background-color: #38b000; color: #fff; }
+        .product-card h3 {
+            font-size: 1.4rem;
+            margin-top: 10px;
+            color: #fff;
+            font-weight: 600;
+        }
+        .product-card .product-desc {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .product-price {
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin-bottom: 18px;
+        }
+        .price-old {
+            text-decoration: line-through;
+            color: #555;
+            font-size: 1.1rem;
+            margin-right: 10px;
+        }
+        .price-new { color: var(--gold); }
+        .btn-add-cart {
+            width: 100%;
+            background-color: var(--gold);
+            border-color: var(--gold);
+            color: #000;
+            font-weight: 800;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-add-cart:hover {
+            background-color: var(--gold-light);
+            transform: scale(1.02);
+        }
+
+        /* ===== PROMO ===== */
+        .promo-section {
+            background: linear-gradient(90deg, var(--dark4) 0%, var(--dark5) 100%);
+            color: var(--text);
+            text-align: center;
+            padding: 65px 5%;
+            margin: 60px 0;
+            border-top: 8px solid var(--gold);
+            box-shadow: 0 0 20px rgba(245,199,0,0.2);
+        }
+        .promo-section h3 {
+            color: #fff;
+            font-size: 2.2rem;
+            margin-bottom: 18px;
+            font-weight: 900;
+            text-shadow: 0 0 5px rgba(245,199,0,0.5);
+        }
+        .promo-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: var(--text-light);
+        }
+        .btn-white {
+            background-color: #fff;
+            color: #000;
+            font-weight: 800;
+            padding: 14px 50px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+        }
+        .btn-white:hover {
+            background-color: var(--gold-light);
+            transform: scale(1.02);
+            color: #000;
+        }
+
+        /* ===== BRANDS ===== */
+        .brands-section {
+            padding: 20px 5% 60px;
+            text-align: center;
+        }
+        .brand-logos {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 15px 0;
+        }
+        .brand-logos img {
+            height: 55px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+        .brand-logos img:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-section {
+            padding: 20px 5% 60px;
+            text-align: center;
+            background-color: var(--black);
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            justify-content: center;
+        }
+        .testimonial-card {
+            background-color: var(--dark2);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 6px solid var(--gold);
+            text-align: left;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+        .testimonial-card i {
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .testimonial-card p {
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        .testimonial-card span {
+            font-weight: bold;
+            color: var(--gold);
+            display: block;
+            margin-top: 20px;
+            border-top: 1px solid #333;
+            padding-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        /* ===== NEWSLETTER ===== */
+        .newsletter-section {
+            background-color: var(--dark1);
+            padding: 65px 5%;
+            text-align: center;
+            margin-top: 60px;
+            border-top: 5px solid var(--border);
+        }
+        .newsletter-section h2 {
+            margin-bottom: 12px;
+            color: #fff;
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+        .newsletter-section p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+        .newsletter-form {
+            max-width: 680px;
+            margin: 0 auto;
+            display: flex;
+            gap: 15px;
+        }
+        .newsletter-form input {
+            padding: 16px;
+            flex-grow: 1;
+            border: 2px solid #555;
+            border-radius: 8px;
+            background-color: var(--dark3);
+            color: var(--text);
+            font-size: 1rem;
+            box-shadow: inset 0 1px 5px rgba(0,0,0,0.5);
+            min-width: 0;
+        }
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        .newsletter-form button {
+            padding: 16px 35px;
+            background-color: var(--gold);
+            border-color: var(--gold);
+            color: #000;
+            font-weight: 800;
+            border-radius: 8px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .newsletter-form button:hover {
+            background-color: var(--gold-light);
+            transform: scale(1.02);
+        }
+
+        /* ===== FOOTER ===== */
+        .site-footer {
+            background-color: var(--black);
+            padding: 55px 5% 30px;
+            border-top: 1px solid var(--border);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 35px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 35px;
+            margin-bottom: 25px;
+        }
+        .footer-col h4 {
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        .footer-col h4.gold { color: var(--gold); }
+        .footer-col h4.white { color: var(--text); }
+        .footer-col p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col ul li a {
+            color: #ddd;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        .footer-col ul li a:hover { color: var(--gold); }
+        .social-links { margin-top: 20px; font-size: 1.8rem; }
+        .social-links a {
+            color: #ddd;
+            margin-right: 18px;
+            transition: color 0.3s;
+        }
+        .social-links a:hover { color: var(--gold); }
+        .footer-contact p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        .footer-contact p i {
+            color: var(--gold);
+            margin-right: 12px;
+            width: 16px;
+        }
+        .footer-bottom {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        .footer-bottom .payment-icons { font-size: 1.7rem; margin: 12px 0; }
+        .footer-bottom .payment-icons i { margin: 0 8px; color: var(--gold); }
+
+        /* ===== HR DIVIDER ===== */
+        .section-hr { border-color: var(--border); margin: 60px 5%; }
+
+        /* ===== BROWSE BTN ===== */
+        .browse-btn {
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 14px 55px;
+            font-size: 1.15rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: 600;
+            background: transparent;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 40px;
+        }
+        .browse-btn:hover {
+            background-color: var(--gold);
+            color: #000;
+        }
+
+        /* ===================================================
+           RESPONSIVE BREAKPOINTS
+        =================================================== */
+
+        /* Large tablet / small desktop */
+        @media (max-width: 1100px) {
+            .desktop-nav ul { gap: 20px; }
+            .desktop-nav { margin-left: 25px; }
+            .site-logo-text { font-size: 1.7rem; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* Tablet */
+        @media (max-width: 900px) {
+            .desktop-nav { display: none; }
+            .hamburger { display: flex; }
+            .site-header { padding: 15px 5%; }
+            .site-logo-text { font-size: 1.6rem; }
+            .guarantees { grid-template-columns: repeat(2, 1fr); }
+            .carousel-item-inner { height: 420px; padding: 0 6%; }
+            .hero-title { font-size: 2.8rem; }
+            .hero-subtitle { font-size: 1.05rem; }
+            .section-title-white,
+            .section-title-gold { font-size: 2rem; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .announcement-bar { font-size: 0.78rem; padding: 8px 10px; }
+            .site-logo-text { font-size: 1.35rem; letter-spacing: 1px; }
+            .header-icons { gap: 14px; }
+            .header-icons a { font-size: 1.1rem; }
+            .carousel-item-inner { height: 360px; padding: 0 5%; }
+            .hero-label { font-size: 0.8rem; letter-spacing: 2px; }
+            .hero-title { font-size: 1.9rem; margin-bottom: 14px; }
+            .hero-subtitle { font-size: 0.92rem; margin-bottom: 20px; }
+            .btn-gold,
+            .btn-outline-gold { padding: 11px 28px; font-size: 0.95rem; }
+            .guarantees {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 25px 4%;
+                gap: 15px;
+            }
+            .guarantee-item i { font-size: 2.2rem; }
+            .guarantee-item p { font-size: 0.88rem; }
+            .section-title-white,
+            .section-title-gold { font-size: 1.6rem; }
+            .section-title-muted { font-size: 1.4rem; }
+            .category-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .category-card img { height: 150px; }
+            .category-card h3 { font-size: 1rem; padding: 12px; }
+            .product-grid { grid-template-columns: 1fr; gap: 22px; }
+            .promo-section h3 { font-size: 1.5rem; }
+            .promo-section p { font-size: 1rem; }
+            .btn-white { padding: 12px 30px; font-size: 0.95rem; }
+            .newsletter-form {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .newsletter-form input,
+            .newsletter-form button { width: 100%; }
+            .newsletter-section h2 { font-size: 1.6rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 25px; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .brand-logos img { height: 40px; }
+            .browse-btn { padding: 12px 35px; font-size: 1rem; }
+            .hero-carousel { margin-bottom: 40px; }
+        }
+
+        /* Extra small */
+        @media (max-width: 380px) {
+            .category-grid { grid-template-columns: 1fr; }
+            .guarantees { grid-template-columns: 1fr 1fr; }
+            .hero-title { font-size: 1.6rem; }
         }
     </style>
-
 </head>
-<body style="background-color: #000; color: #f5f5f5; font-family: 'Segoe UI', Arial, sans-serif;">
-    
-    <div style="background-color: #f5c700; color: #000; text-align: center; padding: 12px; font-size: 1.1rem; font-weight: 900; letter-spacing: 1px;">
-        🔥 *SPECIAL OFFER:* FREE Standard Installation on all Inverter AC Units! <a href="shop.html" style="color: #000; text-decoration: underline; font-weight: 900;">Claim Offer</a>
+<body>
+
+    <!-- ANNOUNCEMENT BAR -->
+    <div class="announcement-bar">
+        SPECIAL OFFER: FREE Standard Installation on all Inverter AC Units!
+        <a href="shop.html">Claim Offer</a>
     </div>
 
-    <header style="display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; border-bottom: 1px solid #1a1a1a; background-color: #000; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);">
-        <div style="display:flex;align-items:center;gap:20px;">
-            <img src="logo_genix.png" alt="Genix cool Modern Tech Logo" class="site-logo" style="height: 50px;">
-            <h1 style="font-size: 2.5rem; margin: 0; color: #f5c700; letter-spacing: 2px; text-shadow: 1px 1px 3px rgba(245, 199, 0, 0.5);">GENIX COOL</h1>
-        </div>
-        
-        <nav style="flex-grow: 1; margin-left: 80px;">
-            <ul style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: flex-start; gap: 45px;">
-                <li><a href="home.html" class="active" style="color: #f5c700; text-decoration: none; font-weight: bold; border-bottom: 3px solid #f5c700; padding-bottom: 8px; font-size: 1.1rem;">Home</a></li>
-                <li><a href="shop.html" class="hover-link" style="color: #f5f5f5; text-decoration: none; transition: color 0.3s; font-size: 1.1rem;">Shop All</a></li>
-                <li><a href="wholesale.html" class="hover-link" style="color: #f5f5f5; text-decoration: none; transition: color 0.3s; font-size: 1.1rem;">Wholesale/B2B</a></li>
-                <li><a href="contact.html" class="hover-link" style="color: #f5f5f5; text-decoration: none; transition: color 0.3s; font-size: 1.1rem;">contact</a></li>
-                <li><a href="about.html" class="hover-link" style="color: #f5f5f5; text-decoration: none; transition: color 0.3s; font-size: 1.1rem;">About</a></li>
+    <!-- HEADER -->
+    <header class="site-header">
+        <!-- Logo text only - no image -->
+        <h1 class="site-logo-text">GENIX COOL</h1>
+
+        <!-- Desktop Nav -->
+        <nav class="desktop-nav" aria-label="Main navigation">
+            <ul>
+                <li><a href="home.html" class="active">Home</a></li>
+                <li><a href="shop.html">Shop All</a></li>
+                <li><a href="wholesale.html">Wholesale/B2B</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="about.html">About</a></li>
             </ul>
         </nav>
-        
-        <div style="display: flex; gap: 30px; align-items: center;">
-            <a href="search.html" style="color: #ddd; font-size: 1.5rem;" title="Search" class="hover-link"><i class="fas fa-search"></i></a>
-            <a href="account.html" style="color: #ddd; font-size: 1.5rem;" title="My Account" class="hover-link"><i class="fas fa-user-circle"></i></a>
-            <a href="cart.html" style="color: #f5c700; text-decoration: none; font-size: 1.5rem;" title="Cart">🛒 <span style="font-size: 1rem; font-weight: bold; color: #f5c700;">(<span id="cartCount">0</span>)</span></a>
+
+        <!-- Icons -->
+        <div class="header-icons">
+            <a href="search.html" title="Search"><i class="fas fa-search"></i></a>
+            <a href="account.html" title="My Account"><i class="fas fa-user-circle"></i></a>
+            <a href="cart.html" class="cart-link" title="Cart">
+                <i class="fas fa-shopping-cart"></i>
+                <span style="font-size:0.85rem; font-weight:bold; color:var(--gold);">(<span id="cartCount">0</span>)</span>
+            </a>
+            <!-- Hamburger -->
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
 
-    <section class="hero-carousel" style="margin-bottom: 80px;">
+    <!-- MOBILE NAV DRAWER -->
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+        <a href="home.html" class="active">Home</a>
+        <a href="shop.html">Shop All</a>
+        <a href="wholesale.html">Wholesale / B2B</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+    </nav>
+
+    <!-- HERO CAROUSEL -->
+    <section class="hero-carousel">
         <div id="heroSlider" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('hero_slide_1.jpg') center/cover no-repeat; height: 600px; display: flex; align-items: center; padding: 0 10%;">
-                    <div style="max-width: 700px;">
-                        <p style="color: #f5c700; text-transform: uppercase; font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">Cutting-Edge HVAC</p>
-                        <h1 style="color: #ffffff; font-size: 4.5rem; margin-bottom: 25px; font-weight: 800; line-height: 1.1; text-shadow: 0 0 15px rgba(0,0,0,1);">Advanced Inverter Cooling Technology</h1>
-                        <p style="font-size: 1.4rem; color: #e0e0e0; margin-bottom: 30px;">Experience unparalleled *performance, whisper-quiet operation, and massive **energy savings* with our next-gen AC units.</p>
-                        <a href="shop.html" class="btn btn-warning btn-lg btn-primary-hover" style="background-color: #f5c700; border-color: #f5c700; color: #000; font-weight: bold; padding: 15px 45px; font-size: 1.2rem; border-radius: 50px; transition: all 0.3s;">Shop Inverters Now <i class="fas fa-angle-right"></i></a>
+
+                <div class="carousel-item active">
+                    <div class="carousel-item-inner">
+                        <div class="carousel-item-bg" style="background-image: url('hero_slide_1.jpg');"></div>
+                        <div class="carousel-item-content">
+                            <span class="hero-label">Cutting-Edge HVAC</span>
+                            <h2 class="hero-title">Advanced Inverter Cooling Technology</h2>
+                            <p class="hero-subtitle">Experience unparalleled performance, whisper-quiet operation, and massive energy savings with our next-gen AC units.</p>
+                            <a href="shop.html" class="btn-gold">Shop Inverters Now <i class="fas fa-angle-right"></i></a>
+                        </div>
                     </div>
                 </div>
-                <div class="carousel-item" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('hero_slide_2.jpg') center/cover no-repeat; height: 600px; display: flex; align-items: center; padding: 0 10%;">
-                    <div style="max-width: 700px;">
-                        <p style="color: #f5c700; text-transform: uppercase; font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; letter-spacing: 2px;">Designer Airflow</p>
-                        <h2 style="color: #ffffff; font-size: 4rem; margin-bottom: 25px; font-weight: 800; line-height: 1.1; text-shadow: 0 0 15px rgba(0,0,0,1);">The Future of Bladeless Airflow</h2>
-                        <p style="font-size: 1.4rem; color: #e0e0e0; margin-bottom: 30px;">Safe, powerful, and whisper-quiet *bladeless fans* designed to integrate seamlessly into contemporary homes.</p>
-                        <a href="bladeless_fans_category.html" class="btn btn-outline-light btn-lg btn-outline-hover" style="border: 2px solid #f5c700; color: #f5c700; padding: 15px 45px; font-size: 1.2rem; border-radius: 50px; transition: all 0.3s;">View Fan Collection <i class="fas fa-angle-right"></i></a>
+
+                <div class="carousel-item">
+                    <div class="carousel-item-inner">
+                        <div class="carousel-item-bg" style="background-image: url('hero_slide_2.jpg');"></div>
+                        <div class="carousel-item-content">
+                            <span class="hero-label">Designer Airflow</span>
+                            <h2 class="hero-title">The Future of Bladeless Airflow</h2>
+                            <p class="hero-subtitle">Safe, powerful, and whisper-quiet bladeless fans designed to integrate seamlessly into contemporary homes.</p>
+                            <a href="bladeless_fans_category.html" class="btn-outline-gold">View Fan Collection <i class="fas fa-angle-right"></i></a>
+                        </div>
                     </div>
                 </div>
+
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -108,253 +855,279 @@
         </div>
     </section>
 
-    <section class="guarantees" style="display: flex; justify-content: space-around; padding: 45px 5%; background-color: #050505; margin-bottom: 80px; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a;">
-        <div class="guarantee-item" style="text-align: center; transition: all 0.3s;">
-            <i class="fas fa-truck" style="color: #f5c700; font-size: 3.2rem; margin-bottom: 12px; transition: all 0.3s;"></i>
-            <p style="margin: 0; font-weight: bold; font-size: 1.15rem; color: #e0e0e0;">Fast Nationwide Delivery</p>
+    <!-- GUARANTEES -->
+    <section class="guarantees" aria-label="Our guarantees">
+        <div class="guarantee-item">
+            <i class="fas fa-truck"></i>
+            <p>Fast Nationwide Delivery</p>
         </div>
-        <div class="guarantee-item" style="text-align: center; transition: all 0.3s;">
-            <i class="fas fa-shield-alt" style="color: #f5c700; font-size: 3.2rem; margin-bottom: 12px; transition: all 0.3s;"></i>
-            <p style="margin: 0; font-weight: bold; font-size: 1.15rem; color: #e0e0e0;">Guaranteed 2-Year Warranty</p>
+        <div class="guarantee-item">
+            <i class="fas fa-shield-alt"></i>
+            <p>Guaranteed 2-Year Warranty</p>
         </div>
-        <div class="guarantee-item" style="text-align: center; transition: all 0.3s;">
-            <i class="fas fa-headset" style="color: #f5c700; font-size: 3.2rem; margin-bottom: 12px; transition: all 0.3s;"></i>
-            <p style="margin: 0; font-weight: bold; font-size: 1.15rem; color: #e0e0e0;">Premium Installation & Support</p>
+        <div class="guarantee-item">
+            <i class="fas fa-headset"></i>
+            <p>Premium Installation &amp; Support</p>
         </div>
-        <div class="guarantee-item" style="text-align: center; transition: all 0.3s;">
-            <i class="fas fa-handshake" style="color: #f5c700; font-size: 3.2rem; margin-bottom: 12px; transition: all 0.3s;"></i>
-            <p style="margin: 0; font-weight: bold; font-size: 1.15rem; color: #e0e0e0;">Competitive Wholesale Pricing</p>
-        </div>
-    </section>
-    
-    <section class="categories" style="padding: 20px 5%; text-align: center; background-color: #000;">
-        <h2 style="margin-bottom: 50px; color: #ffffff; font-size: 2.8rem; border-bottom: 4px solid #f5c700; display: inline-block; padding-bottom: 10px; font-weight: 700;">Explore Our Collections</h2>
-        <div class="category-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-            <a href="split_ac_units.html" class="category" style="display: block; text-decoration: none; color: #f5f5f5; background-color: #080808; padding: 0; border-radius: 15px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); border: 1px solid #222;">
-                <img src="split_AC.jpg" alt="Inverter Split AC Unit" style="width: 100%; height: 240px; object-fit: cover; filter: brightness(0.85);">
-                <h3 style="font-size: 1.5rem; padding: 25px; color: #f5c700; margin: 0; font-weight: 600;">Inverter AC Units</h3>
-            </a>
-            <a href="outdoor_coolers_category.html" class="category" style="display: block; text-decoration: none; color: #f5f5f5; background-color: #080808; padding: 0; border-radius: 15px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); border: 1px solid #222;">
-                <img src="outdoor_cooler.jpg" alt="Commercial Outdoor Cooler" style="width: 100%; height: 240px; object-fit: cover; filter: brightness(0.85);">
-                <h3 style="font-size: 1.5rem; padding: 25px; color: #f5c700; margin: 0; font-weight: 600;">Commercial Coolers</h3>
-            </a>
-            <a href="bladeless_fans_category.html" class="category" style="display: block; text-decoration: none; color: #f5f5f5; background-color: #080808; padding: 0; border-radius: 15px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); border: 1px solid #222;">
-                <img src="Bladeless_fan.jpg" alt="Modern Bladeless Fan" style="width: 100%; height: 240px; object-fit: cover; filter: brightness(0.85);">
-                <h3 style="font-size: 1.5rem; padding: 25px; color: #f5c700; margin: 0; font-weight: 600;">Modern Fans</h3>
-            </a>
-            <a href="refrigerants_category.html" class="category" style="display: block; text-decoration: none; color: #f5f5f5; background-color: #080808; padding: 0; border-radius: 15px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); border: 1px solid #222;">
-                <img src="refrigerant_gas.jpg" alt="Wholesale Refrigerant Gas" style="width: 100%; height: 240px; object-fit: cover; filter: brightness(0.85);">
-                <h3 style="font-size: 1.5rem; padding: 25px; color: #f5c700; margin: 0; font-weight: 600;">Refrigerant Gas (B2B)</h3>
-            </a>
+        <div class="guarantee-item">
+            <i class="fas fa-handshake"></i>
+            <p>Competitive Wholesale Pricing</p>
         </div>
     </section>
-    
-    <hr style="border-color: #1a1a1a; margin: 80px 5%;">
 
-    <section class="bestsellers" style="padding: 20px 5%; text-align: center; background-color: #050505;">
-        <h2 style="margin-bottom: 50px; color: #f5c700; font-size: 2.8rem; border-bottom: 4px solid #ffffff; display: inline-block; padding-bottom: 10px; font-weight: 700;">Top Trending Bestsellers</h2>
-        <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
-            
-            <div class="product" style="background-color: #111; padding: 25px; border-radius: 12px; border: 2px solid #222; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); text-align: left; transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;">
-                <a href="12k_btu_ac.html"><img src="12k_btu_ac..jpg" alt="12000 BTU Air Condition" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;"></a>
-                <span style="background-color: #f5c700; color: #000; padding: 5px 12px; font-size: 0.95rem; font-weight: 800; border-radius: 50px; display: inline-block; margin-bottom: 8px;">★ BEST SELLER</span>
-                <h3 style="font-size: 1.6rem; margin-top: 10px; color: #ffffff; font-weight: 600;">12000 BTU (1.5 HP) Inverter AC</h3>
-                <p style="font-size: 1.05rem; color: #aaa; margin-bottom: 15px;">Highest energy efficiency rating for bedrooms.</p>
-                <p style="font-weight: 800; font-size: 1.6rem; margin-bottom: 20px;">
-                    <span style="text-decoration: line-through; color: #555; font-size: 1.2rem; margin-right: 10px;">₵4,050</span> 
-                    <span style="color: #f5c700;">₵3,950</span>
-                </p>
-                <button onclick="addToCart('12000 BTU AC', 3950)" class="btn btn-warning btn-primary-hover" style="width: 100%; background-color: #f5c700; border-color: #f5c700; color: #000; font-weight: 800; padding: 12px; font-size: 1.1rem; border-radius: 6px; transition: all 0.3s;">Add to Cart <i class="fas fa-cart-plus"></i></button>
-            </div>
-
-            <div class="product" style="background-color: #111; padding: 25px; border-radius: 12px; border: 2px solid #222; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); text-align: left; transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;">
-                <a href="18k_btu_ac.html"><img src="18k_btu_ac.jpg" alt="18000 BTU Air Condition" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;"></a>
-                <span style="background-color: #007bff; color: #fff; padding: 5px 12px; font-size: 0.95rem; font-weight: 800; border-radius: 50px; display: inline-block; margin-bottom: 8px;">NEW MODEL</span>
-                <h3 style="font-size: 1.6rem; margin-top: 10px; color: #ffffff; font-weight: 600;">18000 BTU (2 HP) Standard AC</h3>
-                <p style="font-size: 1.05rem; color: #aaa; margin-bottom: 15px;">Reliable cooling for large living spaces or small offices.</p>
-                <p style="font-weight: 800; font-size: 1.6rem; margin-bottom: 20px;">
-                    <span style="text-decoration: line-through; color: #555; font-size: 1.2rem; margin-right: 10px;">₵6,000</span> 
-                    <span style="color: #f5c700;">₵5,600</span>
-                </p>
-                <button onclick="addToCart('18000 BTU AC', 5600)" class="btn btn-warning btn-primary-hover" style="width: 100%; background-color: #f5c700; border-color: #f5c700; color: #000; font-weight: 800; padding: 12px; font-size: 1.1rem; border-radius: 6px; transition: all 0.3s;">Add to Cart <i class="fas fa-cart-plus"></i></button>
-            </div>
-
-            <div class="product" style="background-color: #111; padding: 25px; border-radius: 12px; border: 2px solid #222; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); text-align: left; transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;">
-                <a href="smart_air_purifier.html"><img src="smart_portable_air_purifier.jpg" alt="Smart Portable Air Purifier" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;"></a>
-                <span style="background-color: #f5c700; color: #000; padding: 5px 12px; font-size: 0.95rem; font-weight: 800; border-radius: 50px; display: inline-block; margin-bottom: 8px;">TECH ACCESSORY</span>
-                <h3 style="font-size: 1.6rem; margin-top: 10px; color: #ffffff; font-weight: 600;">Smart Portable Air Purifier (HEPA)</h3>
-                <p style="font-size: 1.05rem; color: #aaa; margin-bottom: 15px;">3-stage HEPA filter removes 99.97% of airborne particles. App-controlled.</p>
-                <p style="font-weight: 800; font-size: 1.6rem; margin-bottom: 20px;">
-                    <span style="text-decoration: line-through; color: #555; font-size: 1.2rem; margin-right: 10px;">₵780</span> 
-                    <span style="color: #f5c700;">₵699</span>
-                </p>
-                <button onclick="addToCart('Smart Air Purifier', 699)" class="btn btn-warning btn-primary-hover" style="width: 100%; background-color: #f5c700; border-color: #f5c700; color: #000; font-weight: 800; padding: 12px; font-size: 1.1rem; border-radius: 6px; transition: all 0.3s;">Add to Cart <i class="fas fa-cart-plus"></i></button>
-            </div>
-
-            <div class="product" style="background-color: #111; padding: 25px; border-radius: 12px; border: 2px solid #222; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); text-align: left; transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;">
-                <a href="gan_charger.html"><img src="100W GaN.jpg" alt="100W GaN USB-C Charger" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;"></a>
-                <span style="background-color: #4CAF50; color: #fff; padding: 5px 12px; font-size: 0.95rem; font-weight: 800; border-radius: 50px; display: inline-block; margin-bottom: 8px;">FAST CHARGE</span>
-                <h3 style="font-size: 1.6rem; margin-top: 10px; color: #ffffff; font-weight: 600;">100W GaN USB-C Charger (Multi-Port)</h3>
-                <p style="font-size: 1.05rem; color: #aaa; margin-bottom: 15px;">Gallium Nitride technology for ultra-fast, compact charging of laptops and phones.</p>
-                <p style="font-weight: 800; font-size: 1.6rem; margin-bottom: 20px;">
-                    <span style="text-decoration: line-through; color: #555; font-size: 1.2rem; margin-right: 10px;">₵450</span> 
-                    <span style="color: #f5c700;">₵399</span>
-                </p>
-                <button onclick="addToCart('GaN USB-C Charger', 399)" class="btn btn-warning btn-primary-hover" style="width: 100%; background-color: #f5c700; border-color: #f5c700; color: #000; font-weight: 800; padding: 12px; font-size: 1.1rem; border-radius: 6px; transition: all 0.3s;">Add to Cart <i class="fas fa-cart-plus"></i></button>
-            </div>
-
-            <div class="product" style="background-color: #111; padding: 25px; border-radius: 12px; border: 2px solid #222; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); text-align: left; transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;">
-                <a href="standing_ac.html"><img src="standing_ac.jpg" alt="2.5 HP Standing Air Condition" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;"></a>
-                <span style="background-color: #333; color: #f5f5f5; padding: 5px 12px; font-size: 0.95rem; font-weight: 800; border-radius: 50px; display: inline-block; margin-bottom: 8px;">COMMERCIAL</span>
-                <h3 style="font-size: 1.6rem; margin-top: 10px; color: #ffffff; font-weight: 600;">2.5 HP Standing AC - Commercial</h3>
-                <p style="font-size: 1.05rem; color: #aaa; margin-bottom: 15px;">Powerful cooling for offices, restaurants, and halls.</p>
-                <p style="font-weight: 800; font-size: 1.6rem; margin-bottom: 20px;">
-                    <span style="text-decoration: line-through; color: #555; font-size: 1.2rem; margin-right: 10px;">₵12,500</span> 
-                    <span style="color: #f5c700;">₵11,800</span>
-                </p>
-                <button onclick="addToCart('2.5 HP Standing AC', 11800)" class="btn btn-warning btn-primary-hover" style="width: 100%; background-color: #f5c700; border-color: #f5c700; color: #000; font-weight: 800; padding: 12px; font-size: 1.1rem; border-radius: 6px; transition: all 0.3s;">Add to Cart <i class="fas fa-cart-plus"></i></button>
-            </div>
-
-            <div class="product" style="background-color: #111; padding: 25px; border-radius: 12px; border: 2px solid #222; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); text-align: left; transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;">
-                <a href="outdoor_mist_fan.html"><img src="outdoor_mist_fan.jpg" alt="Outdoor Mist Fan" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;"></a>
-                <span style="background-color: #38b000; color: #fff; padding: 5px 12px; font-size: 0.95rem; font-weight: 800; border-radius: 50px; display: inline-block; margin-bottom: 8px;">OUTDOOR</span>
-                <h3 style="font-size: 1.6rem; margin-top: 10px; color: #ffffff; font-weight: 600;">Commercial Outdoor Mist Fan</h3>
-                <p style="font-size: 1.05rem; color: #aaa; margin-bottom: 15px;">High-pressure atomization keeps patios and gardens cool.</p>
-                <p style="font-weight: 800; font-size: 1.6rem; margin-bottom: 20px;">
-                    <span style="text-decoration: line-through; color: #555; font-size: 1.2rem; margin-right: 10px;">₵2,500</span> 
-                    <span style="color: #f5c700;">₵2,300</span>
-                </p>
-                <button onclick="addToCart('Outdoor Mist Fan', 2300)" class="btn btn-warning btn-primary-hover" style="width: 100%; background-color: #f5c700; border-color: #f5c700; color: #000; font-weight: 800; padding: 12px; font-size: 1.1rem; border-radius: 6px; transition: all 0.3s;">Add to Cart <i class="fas fa-cart-plus"></i></button>
-            </div>
+    <!-- CATEGORIES -->
+    <section class="categories-section">
+        <h2 class="section-title section-title-white">Explore Our Collections</h2>
+        <div class="category-grid">
+            <a href="split_ac_units.html" class="category-card">
+                <img src="split_AC.jpg" alt="Inverter Split AC Unit">
+                <h3>Inverter AC Units</h3>
+            </a>
+            <a href="outdoor_coolers_category.html" class="category-card">
+                <img src="outdoor_cooler.jpg" alt="Commercial Outdoor Cooler">
+                <h3>Commercial Coolers</h3>
+            </a>
+            <a href="bladeless_fans_category.html" class="category-card">
+                <img src="Bladeless_fan.jpg" alt="Modern Bladeless Fan">
+                <h3>Modern Fans</h3>
+            </a>
+            <a href="refrigerants_category.html" class="category-card">
+                <img src="refrigerant_gas.jpg" alt="Wholesale Refrigerant Gas">
+                <h3>Refrigerant Gas (B2B)</h3>
+            </a>
         </div>
-        <a href="shop.html" class="btn btn-outline-warning mt-5 btn-outline-hover" style="border: 2px solid #f5c700; color: #f5c700; padding: 15px 60px; font-size: 1.3rem; border-radius: 50px; transition: all 0.3s; font-weight: 600;">Browse Entire Collection <i class="fas fa-long-arrow-alt-right"></i></a>
     </section>
 
-    <div class="promo" style="background: linear-gradient(90deg, #1a1a1a 0%, #222 100%); color: #f5f5f5; text-align: center; padding: 70px 5%; margin: 80px 0; border-top: 8px solid #f5c700; box-shadow: 0 0 20px rgba(245, 199, 0, 0.2);">
-        <h3 style="color: #ffffff; font-size: 2.5rem; margin-bottom: 20px; font-weight: 900; text-shadow: 0 0 5px rgba(245, 199, 0, 0.5);">💰 Exclusive Wholesale Opportunity Awaits!</h3>
-        <p style="font-size: 1.4rem; max-width: 900px; margin: 0 auto 35px; color: #e0e0e0;">Partner with *Genix cool* and gain access to the best prices in the market—*save up to 25%* on bulk, year-round orders. Apply today.</p>
-        <a href="wholesale.html" class="btn btn-light btn-lg btn-primary-hover" style="background-color: #ffffff; color: #000; font-weight: 800; padding: 15px 55px; font-size: 1.3rem; border-radius: 50px; transition: all 0.3s;">Apply for Dealer Pricing <i class="fas fa-hand-point-right"></i></a>
+    <hr class="section-hr">
+
+    <!-- BESTSELLERS -->
+    <section class="bestsellers-section">
+        <h2 class="section-title section-title-gold">Top Trending Bestsellers</h2>
+        <div class="product-grid">
+
+            <div class="product-card">
+                <a href="12k_btu_ac.html"><img src="12k_btu_ac..jpg" alt="12000 BTU Air Condition"></a>
+                <span class="product-badge badge-gold">BEST SELLER</span>
+                <h3>12000 BTU (1.5 HP) Inverter AC</h3>
+                <p class="product-desc">Highest energy efficiency rating for bedrooms.</p>
+                <p class="product-price">
+                    <span class="price-old">&#8373;4,050</span>
+                    <span class="price-new">&#8373;3,950</span>
+                </p>
+                <button onclick="addToCart('12000 BTU AC', 3950)" class="btn-add-cart">Add to Cart <i class="fas fa-cart-plus"></i></button>
+            </div>
+
+            <div class="product-card">
+                <a href="18k_btu_ac.html"><img src="18k_btu_ac.jpg" alt="18000 BTU Air Condition"></a>
+                <span class="product-badge badge-blue">NEW MODEL</span>
+                <h3>18000 BTU (2 HP) Standard AC</h3>
+                <p class="product-desc">Reliable cooling for large living spaces or small offices.</p>
+                <p class="product-price">
+                    <span class="price-old">&#8373;6,000</span>
+                    <span class="price-new">&#8373;5,600</span>
+                </p>
+                <button onclick="addToCart('18000 BTU AC', 5600)" class="btn-add-cart">Add to Cart <i class="fas fa-cart-plus"></i></button>
+            </div>
+
+            <div class="product-card">
+                <a href="smart_air_purifier.html"><img src="smart_portable_air_purifier.jpg" alt="Smart Portable Air Purifier"></a>
+                <span class="product-badge badge-gold">TECH ACCESSORY</span>
+                <h3>Smart Portable Air Purifier (HEPA)</h3>
+                <p class="product-desc">3-stage HEPA filter removes 99.97% of airborne particles. App-controlled.</p>
+                <p class="product-price">
+                    <span class="price-old">&#8373;780</span>
+                    <span class="price-new">&#8373;699</span>
+                </p>
+                <button onclick="addToCart('Smart Air Purifier', 699)" class="btn-add-cart">Add to Cart <i class="fas fa-cart-plus"></i></button>
+            </div>
+
+            <div class="product-card">
+                <a href="gan_charger.html"><img src="100W GaN.jpg" alt="100W GaN USB-C Charger"></a>
+                <span class="product-badge badge-green">FAST CHARGE</span>
+                <h3>100W GaN USB-C Charger (Multi-Port)</h3>
+                <p class="product-desc">Gallium Nitride technology for ultra-fast, compact charging of laptops and phones.</p>
+                <p class="product-price">
+                    <span class="price-old">&#8373;450</span>
+                    <span class="price-new">&#8373;399</span>
+                </p>
+                <button onclick="addToCart('GaN USB-C Charger', 399)" class="btn-add-cart">Add to Cart <i class="fas fa-cart-plus"></i></button>
+            </div>
+
+            <div class="product-card">
+                <a href="standing_ac.html"><img src="standing_ac.jpg" alt="2.5 HP Standing Air Condition"></a>
+                <span class="product-badge badge-dark">COMMERCIAL</span>
+                <h3>2.5 HP Standing AC - Commercial</h3>
+                <p class="product-desc">Powerful cooling for offices, restaurants, and halls.</p>
+                <p class="product-price">
+                    <span class="price-old">&#8373;12,500</span>
+                    <span class="price-new">&#8373;11,800</span>
+                </p>
+                <button onclick="addToCart('2.5 HP Standing AC', 11800)" class="btn-add-cart">Add to Cart <i class="fas fa-cart-plus"></i></button>
+            </div>
+
+            <div class="product-card">
+                <a href="outdoor_mist_fan.html"><img src="outdoor_mist_fan.jpg" alt="Outdoor Mist Fan"></a>
+                <span class="product-badge badge-leafgreen">OUTDOOR</span>
+                <h3>Commercial Outdoor Mist Fan</h3>
+                <p class="product-desc">High-pressure atomization keeps patios and gardens cool.</p>
+                <p class="product-price">
+                    <span class="price-old">&#8373;2,500</span>
+                    <span class="price-new">&#8373;2,300</span>
+                </p>
+                <button onclick="addToCart('Outdoor Mist Fan', 2300)" class="btn-add-cart">Add to Cart <i class="fas fa-cart-plus"></i></button>
+            </div>
+
+        </div>
+        <a href="shop.html" class="browse-btn">Browse Entire Collection <i class="fas fa-long-arrow-alt-right"></i></a>
+    </section>
+
+    <!-- PROMO BANNER -->
+    <div class="promo-section">
+        <h3>Exclusive Wholesale Opportunity Awaits!</h3>
+        <p>Partner with Genix cool and gain access to the best prices in the market — save up to 25% on bulk, year-round orders. Apply today.</p>
+        <a href="wholesale.html" class="btn-white">Apply for Dealer Pricing <i class="fas fa-hand-point-right"></i></a>
     </div>
-    
-    <section class="brands" style="padding: 20px 5%; text-align: center;">
-        <h2 style="margin-bottom: 50px; color: #aaa; font-size: 2rem; border-bottom: 1px solid #333; display: inline-block; padding-bottom: 8px;">Trusted Brands. Guaranteed Quality.</h2>
-        <div class="brand-logos" style="display: flex; justify-content: space-around; align-items: center; filter: grayscale(100%); opacity: 0.6; padding: 15px 0;">
-            <img src="brand_logo_1.png" alt="Brand Logo 1" style="height: 60px; transition: all 0.3s;" onmouseover="this.style.opacity='1'; this.style.filter='grayscale(0%)';" onmouseout="this.style.opacity='0.6'; this.style.filter='grayscale(100%)';">
-            <img src="brand_logo_2.png" alt="Brand Logo 2" style="height: 60px; transition: all 0.3s;" onmouseover="this.style.opacity='1'; this.style.filter='grayscale(0%)';" onmouseout="this.style.opacity='0.6'; this.style.filter='grayscale(100%)';">
-            <img src="brand_logo_3.png" alt="Brand Logo 3" style="height: 60px; transition: all 0.3s;" onmouseover="this.style.opacity='1'; this.style.filter='grayscale(0%)';" onmouseout="this.style.opacity='0.6'; this.style.filter='grayscale(100%)';">
-            <img src="brand_logo_4.png" alt="Brand Logo 4" style="height: 60px; transition: all 0.3s;" onmouseover="this.style.opacity='1'; this.style.filter='grayscale(0%)';" onmouseout="this.style.opacity='0.6'; this.style.filter='grayscale(100%)';">
+
+    <!-- BRANDS -->
+    <section class="brands-section">
+        <h2 class="section-title section-title-muted">Trusted Brands. Guaranteed Quality.</h2>
+        <div class="brand-logos">
+            <img src="brand_logo_1.png" alt="Brand Logo 1"
+                onmouseover="this.style.opacity='1';this.style.filter='grayscale(0%)';"
+                onmouseout="this.style.opacity='0.6';this.style.filter='grayscale(100%)';">
+            <img src="brand_logo_2.png" alt="Brand Logo 2"
+                onmouseover="this.style.opacity='1';this.style.filter='grayscale(0%)';"
+                onmouseout="this.style.opacity='0.6';this.style.filter='grayscale(100%)';">
+            <img src="brand_logo_3.png" alt="Brand Logo 3"
+                onmouseover="this.style.opacity='1';this.style.filter='grayscale(0%)';"
+                onmouseout="this.style.opacity='0.6';this.style.filter='grayscale(100%)';">
+            <img src="brand_logo_4.png" alt="Brand Logo 4"
+                onmouseover="this.style.opacity='1';this.style.filter='grayscale(0%)';"
+                onmouseout="this.style.opacity='0.6';this.style.filter='grayscale(100%)';">
         </div>
     </section>
 
-    <hr style="border-color: #1a1a1a; margin: 80px 5%;">
+    <hr class="section-hr">
 
-    <section class="testimonials" style="padding: 20px 5%; text-align: center; background-color: #000;">
-        <h2 style="margin-bottom: 50px; color: #ffffff; font-size: 2.8rem; border-bottom: 4px solid #f5c700; display: inline-block; padding-bottom: 10px; font-weight: 700;">Trusted by Customers & Partners</h2>
-        <div style="display: flex; gap: 40px; justify-content: center;">
-            <div class="testimonial" style="background-color: #080808; padding: 35px; border-radius: 15px; border-left: 6px solid #f5c700; max-width: 45%; text-align: left; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);">
-                <i class="fas fa-quote-left" style="color: #f5c700; font-size: 2rem; margin-bottom: 18px; display: block;"></i>
-                <p style="font-style: italic; font-size: 1.2rem; color: #e0e0e0; line-height: 1.6;">“The new inverter AC unit is amazing! Great energy savings and fast cooling. I recommend Genix cool to everyone. The installation team was professional and fast.”</p> 
-                <span style="font-weight: bold; color: #f5c700; display: block; margin-top: 25px; border-top: 1px solid #333; padding-top: 15px;">– Sarah A., Accra | Verified Home Buyer</span>
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section">
+        <h2 class="section-title section-title-white">Trusted by Customers &amp; Partners</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <i class="fas fa-quote-left"></i>
+                <p>"The new inverter AC unit is amazing! Great energy savings and fast cooling. I recommend Genix cool to everyone. The installation team was professional and fast."</p>
+                <span>Sarah A., Accra | Verified Home Buyer</span>
             </div>
-            <div class="testimonial" style="background-color: #080808; padding: 35px; border-radius: 15px; border-left: 6px solid #f5c700; max-width: 45%; text-align: left; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);">
-                <i class="fas fa-quote-left" style="color: #f5c700; font-size: 2rem; margin-bottom: 18px; display: block;"></i>
-                <p style="font-style: italic; font-size: 1.2rem; color: #e0e0e0; line-height: 1.6;">“Excellent customer service and highly competitive wholesale pricing on refrigerants. Our company has relied on Genix cool as our trusted supplier for all our projects.”</p> 
-                <span style="font-weight: bold; color: #f5c700; display: block; margin-top: 25px; border-top: 1px solid #333; padding-top: 15px;">– Daniel K., Kumasi | Wholesale Partner</span>
+            <div class="testimonial-card">
+                <i class="fas fa-quote-left"></i>
+                <p>"Excellent customer service and highly competitive wholesale pricing on refrigerants. Our company has relied on Genix cool as our trusted supplier for all our projects."</p>
+                <span>Daniel K., Kumasi | Wholesale Partner</span>
             </div>
         </div>
     </section>
 
-    <section class="newsletter" style="background-color: #050505; padding: 70px 5%; text-align: center; margin-top: 80px; border-top: 5px solid #1a1a1a;">
-        <h2 style="margin-bottom: 15px; color: #ffffff; font-size: 2.5rem; font-weight: 800;">Unlock Your *10% Off* Discount!</h2>
-        <p style="font-size: 1.3rem; color: #aaa; margin-bottom: 35px;">Subscribe to our newsletter for exclusive flash sales, tech news, and immediate access to your welcome discount.</p>
-        <div style="max-width: 700px; margin: 0 auto; display: flex; gap: 20px; justify-content: center;">
-            <input type="email" id="email" placeholder="Enter your email address to unlock your discount" required style="padding: 18px; flex-grow: 1; border: 2px solid #555; border-radius: 8px; background-color: #111; color: #f5f5f5; font-size: 1.1rem; box-shadow: inset 0 1px 5px rgba(0,0,0,0.5);">
-            <button onclick="subscribe()" class="btn btn-warning btn-primary-hover" style="padding: 18px 45px; background-color: #f5c700; border-color: #f5c700; color: #000; font-weight: 800; border-radius: 8px; font-size: 1.1rem; text-transform: uppercase; transition: all 0.3s;">Subscribe Now</button>
+    <!-- NEWSLETTER -->
+    <section class="newsletter-section">
+        <h2>Unlock Your 10% Off Discount!</h2>
+        <p>Subscribe to our newsletter for exclusive flash sales, tech news, and immediate access to your welcome discount.</p>
+        <div class="newsletter-form">
+            <input type="email" id="email" placeholder="Enter your email address to unlock your discount" required>
+            <button onclick="subscribe()">Subscribe Now</button>
         </div>
     </section>
-    
-    <footer style="background-color: #000; padding: 60px 5%; border-top: 1px solid #1a1a1a;">
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; border-bottom: 1px solid #1a1a1a; padding-bottom: 40px; margin-bottom: 30px;">
-            
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-grid">
             <div class="footer-col">
-                <h4 style="color: #f5c700; margin-bottom: 25px; font-size: 1.6rem; font-weight: 700;">GENIX COOL</h4>
-                <p style="font-size: 1rem; color: #aaa; line-height: 1.6;">Your premium supplier of high-efficiency cooling technology and modern home electronics across Ghana and West Africa.</p>
-                <div class="social-links" style="margin-top: 25px; font-size: 2rem;">
-                    <a href="#" style="color: #ddd; margin-right: 20px;" class="hover-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" style="color: #ddd; margin-right: 20px;" class="hover-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" style="color: #ddd; margin-right: 20px;" class="hover-link"><i class="fab fa-instagram"></i></a>
+                <h4 class="gold">GENIX COOL</h4>
+                <p>Your premium supplier of high-efficiency cooling technology and modern home electronics across Ghana and West Africa.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
-            
             <div class="footer-col">
-                <h4 style="color: #f5f5f5; margin-bottom: 25px; font-size: 1.6rem; font-weight: 600;">Customer Service</h4>
-                <ul style="list-style: none; padding: 0;">
-                    <li><a href="contact.html" style="color: #ddd; text-decoration: none; display: block; margin-bottom: 12px; font-size: 1rem;" class="hover-link">Contact Us</a></li>
-                    <li><a href="shipping.html" style="color: #ddd; text-decoration: none; display: block; margin-bottom: 12px; font-size: 1rem;" class="hover-link">Shipping & Delivery</a></li>
-                    <li><a href="returns.html" style="color: #ddd; text-decoration: none; display: block; margin-bottom: 12px; font-size: 1rem;" class="hover-link">Exchange & Returns Policy</a></li>
-                    <li><a href="faq.html" style="color: #ddd; text-decoration: none; display: block; margin-bottom: 12px; font-size: 1rem;" class="hover-link">FAQ & Help Center</a></li>
+                <h4 class="white">Customer Service</h4>
+                <ul>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="shipping.html">Shipping &amp; Delivery</a></li>
+                    <li><a href="returns.html">Exchange &amp; Returns Policy</a></li>
+                    <li><a href="faq.html">FAQ &amp; Help Center</a></li>
                 </ul>
             </div>
-            
             <div class="footer-col">
-                <h4 style="color: #f5f5f5; margin-bottom: 25px; font-size: 1.6rem; font-weight: 600;">Information</h4>
-                <ul style="list-style: none; padding: 0;">
-                    <li><a href="about.html" style="color: #ddd; text-decoration: none; display: block; margin-bottom: 12px; font-size: 1rem;" class="hover-link">About Genix cool</a></li>
-                    <li><a href="privacy.html" style="color: #ddd; text-decoration: none; display: block; margin-bottom: 12px; font-size: 1rem;" class="hover-link">Privacy Policy</a></li>
-                    <li><a href="terms.html" style="color: #ddd; text-decoration: none; display: block; margin-bottom: 12px; font-size: 1rem;" class="hover-link">Terms of Use</a></li>
-                    <li><a href="sitemap.html" style="color: #ddd; text-decoration: none; display: block; margin-bottom: 12px; font-size: 1rem;" class="hover-link">Site Map</a></li>
+                <h4 class="white">Information</h4>
+                <ul>
+                    <li><a href="about.html">About Genix cool</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Use</a></li>
+                    <li><a href="sitemap.html">Site Map</a></li>
                 </ul>
             </div>
-            
-            <div class="footer-col">
-                <h4 style="color: #f5f5f5; margin-bottom: 25px; font-size: 1.6rem; font-weight: 600;">Contact Details</h4>
-                <p style="font-size: 1rem; color: #e0e0e0; margin-bottom: 12px;"><i class="fas fa-map-marker-alt" style="color: #f5c700; margin-right: 15px;"></i> Accra, Greater Accra Region, Ghana</p>
-                <p style="font-size: 1rem; color: #e0e0e0; margin-bottom: 12px;"><i class="fas fa-envelope" style="color: #f5c700; margin-right: 15px;"></i> *support@genixcool.com*</p>
-                <p style="font-size: 1rem; color: #e0e0e0; margin-bottom: 12px;"><i class="fas fa-phone" style="color: #f5c700; margin-right: 15px;"></i> *+233 (0) 555-555-555*</p>
+            <div class="footer-col footer-contact">
+                <h4 class="white">Contact Details</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Accra, Greater Accra Region, Ghana</p>
+                <p><i class="fas fa-envelope"></i> support@genixcool.com</p>
+                <p><i class="fas fa-phone"></i> +233 (0) 555-555-555</p>
             </div>
         </div>
-        
-        <div style="text-align: center; font-size: 0.95rem; color: #777;">
-            <p style="margin-bottom: 15px;">© 2025 Genix cool. All Rights Reserved. Curated electronics & accessories.</p>
-            <div style="font-size: 1.8rem;">
-                <i class="fab fa-cc-visa" style="margin: 0 10px; color: #f5c700;"></i>
-                <i class="fab fa-cc-mastercard" style="margin: 0 10px; color: #f5c700;"></i>
-                <i class="fab fa-cc-paypal" style="margin: 0 10px; color: #f5c700;"></i>
-                <i class="fas fa-credit-card" style="margin: 0 10px; color: #f5c700;"></i>
+        <div class="footer-bottom">
+            <p>2025 Genix cool. All Rights Reserved. Curated electronics &amp; accessories.</p>
+            <div class="payment-icons">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-paypal"></i>
+                <i class="fas fa-credit-card"></i>
             </div>
-            <p style="margin-top: 10px;">Secure Payments & Data Encryption Guaranteed. | VAT Reg: 987654321</p>
+            <p>Secure Payments &amp; Data Encryption Guaranteed. | VAT Reg: 987654321</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Placeholder for real cart data
         let cartItemCount = 0;
 
-        // Function to update the cart count in the header
         function updateCartCount() {
             document.getElementById('cartCount').innerText = cartItemCount;
         }
 
-        // Illustrative function to add a product to the cart
         function addToCart(productName, price) {
             cartItemCount++;
             updateCartCount();
-            alert(${productName} (₵${price}) added to cart! Your cart now has ${cartItemCount} items.);
+            alert(productName + ' (\u20B3' + price + ') added to cart! Your cart now has ' + cartItemCount + ' item(s).');
         }
 
-        // Illustrative function for newsletter subscription
         function subscribe() {
             const email = document.getElementById('email').value;
             if (email && email.includes('@')) {
-                alert(Thank you for subscribing with ${email}! Your 10% discount code has been sent.);
-                document.getElementById('email').value = ''; // Clear input
+                alert('Thank you for subscribing with ' + email + '! Your 10% discount code has been sent.');
+                document.getElementById('email').value = '';
             } else {
                 alert('Please enter a valid email address.');
             }
         }
-        
-        // Initialize the cart count on page load
+
+        // Hamburger toggle
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileNav = document.getElementById('mobileNav');
+
+        hamburgerBtn.addEventListener('click', function () {
+            const isOpen = mobileNav.classList.toggle('open');
+            hamburgerBtn.classList.toggle('open', isOpen);
+            hamburgerBtn.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // Close mobile nav on link click
+        mobileNav.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                mobileNav.classList.remove('open');
+                hamburgerBtn.classList.remove('open');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', updateCartCount);
     </script>
 </body>
