@@ -16,6 +16,10 @@
             --color-border: #444444;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -63,6 +67,7 @@
             color: var(--color-text-light);
             font-weight: 500;
             padding: 5px 0;
+            white-space: nowrap;
         }
         nav a:hover, nav a.active {
             color: var(--color-primary);
@@ -191,6 +196,7 @@
             font-size: 1.1em;
             transition: background-color 0.2s;
             border-bottom: 1px solid var(--color-secondary);
+            gap: 15px;
         }
         .accordion-header:hover {
             background-color: #252525;
@@ -199,6 +205,11 @@
             font-size: 1.1em;
             color: var(--color-primary);
             transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+        .accordion-header span:first-child {
+            flex: 1;
+            text-align: left;
         }
         .accordion-content {
             max-height: 0;
@@ -251,6 +262,7 @@
             font-weight: bold; 
             font-size: 1.1em;
             transition: background 0.3s;
+            display: inline-block;
         }
         .cta-button:hover {
             background: var(--color-text-light);
@@ -301,27 +313,375 @@
             padding-top: 15px;
         }
 
-        /* === RESPONSIVE === */
-        @media (max-width: 768px) {
-             header, footer {
-                padding: 15px 20px;
+        /* === RESPONSIVE DESIGN === */
+        
+        /* TABLET: 769px - 1024px */
+        @media (max-width: 1024px) {
+            .support-container {
+                padding: 0 20px;
+                margin: 30px auto;
             }
+
+            .quick-links {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .link-card {
+                padding: 25px;
+            }
+
+            footer {
+                padding: 25px 30px;
+            }
+        }
+
+        /* MOBILE: 481px - 768px */
+        @media (max-width: 768px) {
+            /* Header adjustments */
+            header {
+                padding: 12px 15px;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            header h1 {
+                font-size: 1.4em;
+                letter-spacing: 1px;
+                flex: 1 1 auto;
+            }
+
+            nav {
+                width: 100%;
+            }
+
+            nav ul {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 0.9em;
+                padding: 5px 8px;
+            }
+
+            /* Main content */
+            .support-container {
+                padding: 0 15px;
+                margin: 25px auto;
+            }
+
+            /* Support header */
+            .support-header {
+                margin-bottom: 30px;
+                padding-bottom: 15px;
+            }
+
+            .support-header i {
+                font-size: 3em !important;
+            }
+
             .support-header h2 {
                 font-size: 2em;
+                margin: 10px 0;
             }
+
+            .support-header p {
+                font-size: 1em;
+            }
+
+            /* Search bar */
+            .search-bar {
+                margin-bottom: 35px;
+            }
+
             .search-bar input {
                 width: 100%;
-                padding: 15px;
+                padding: 14px 15px;
+                font-size: 16px; /* Prevents zoom on iOS */
             }
+
+            /* Quick links */
+            .quick-links {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 40px;
+            }
+
             .link-card {
+                padding: 20px;
                 text-align: center;
+                border-left: none;
+                border-top: 5px solid var(--color-primary);
             }
+
             .link-card i {
                 float: none;
                 margin-right: 0;
+                margin-bottom: 12px;
+                font-size: 2.2em;
             }
+
+            .link-card h4 {
+                font-size: 1.2em;
+                margin-bottom: 8px;
+            }
+
+            .link-card p {
+                font-size: 0.85em;
+                clear: both;
+                margin-top: 8px;
+            }
+
+            .link-card a {
+                margin-top: 12px;
+            }
+
+            /* FAQ Section */
+            .faq-section h3 {
+                font-size: 1.6em;
+                margin-bottom: 20px;
+            }
+
+            .accordion-item {
+                margin-bottom: 6px;
+                border-radius: 4px;
+            }
+
+            .accordion-header {
+                padding: 16px 15px;
+                font-size: 0.95em;
+                gap: 10px;
+            }
+
+            .accordion-header span:first-child {
+                line-height: 1.4;
+            }
+
+            .accordion-header .icon {
+                font-size: 1em;
+            }
+
+            .accordion-content {
+                padding: 0 15px;
+            }
+
+            .accordion-content p {
+                padding: 12px 0;
+                font-size: 0.9em;
+            }
+
+            .accordion-item.active .accordion-content {
+                max-height: 600px;
+                padding: 12px 15px;
+            }
+
+            /* Final CTA */
+            .final-cta {
+                margin-top: 40px;
+                padding: 25px 20px;
+                border-radius: 8px;
+            }
+
+            .final-cta h4 {
+                font-size: 1.4em;
+                margin-bottom: 12px;
+            }
+
+            .final-cta p {
+                font-size: 0.95em;
+                margin-bottom: 18px;
+            }
+
+            .cta-button {
+                padding: 12px 25px;
+                font-size: 1em;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .final-cta .contact-info {
+                font-size: 0.8em;
+                margin-top: 15px;
+            }
+
+            /* Footer */
+            footer {
+                padding: 20px 15px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 15px;
+            }
+
             .footer-column {
-                min-width: 45%;
+                width: 100%;
+                min-width: unset;
+            }
+
+            .footer-column ul li {
+                display: inline;
+                margin-right: 10px;
+            }
+
+            .footer-column ul li:after {
+                content: " | ";
+            }
+
+            .footer-column ul li:last-child:after {
+                content: "";
+            }
+
+            .copyright {
+                width: 100%;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+        }
+
+        /* SMALL MOBILE: 320px - 480px */
+        @media (max-width: 480px) {
+            /* Header */
+            header {
+                padding: 10px;
+            }
+
+            header h1 {
+                font-size: 1.2em;
+                letter-spacing: 0px;
+            }
+
+            nav ul {
+                gap: 8px;
+                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            nav a {
+                font-size: 0.8em;
+                padding: 4px 6px;
+                white-space: nowrap;
+            }
+
+            /* Main content */
+            .support-container {
+                padding: 0 12px;
+                margin: 20px auto;
+            }
+
+            /* Support header */
+            .support-header h2 {
+                font-size: 1.5em;
+            }
+
+            .support-header p {
+                font-size: 0.9em;
+            }
+
+            /* Search bar */
+            .search-bar input {
+                width: 100%;
+                padding: 12px 12px;
+                font-size: 16px;
+            }
+
+            /* Quick links */
+            .quick-links {
+                gap: 12px;
+                margin-bottom: 30px;
+            }
+
+            .link-card {
+                padding: 15px;
+                border-top-width: 4px;
+            }
+
+            .link-card i {
+                font-size: 1.8em;
+                margin-bottom: 10px;
+            }
+
+            .link-card h4 {
+                font-size: 1.1em;
+                margin-bottom: 6px;
+            }
+
+            .link-card p {
+                font-size: 0.8em;
+            }
+
+            /* FAQ */
+            .faq-section h3 {
+                font-size: 1.4em;
+                margin-bottom: 15px;
+            }
+
+            .accordion-header {
+                padding: 14px 12px;
+                font-size: 0.9em;
+            }
+
+            .accordion-content p {
+                font-size: 0.85em;
+                padding: 10px 0;
+            }
+
+            /* CTA */
+            .final-cta {
+                margin-top: 30px;
+                padding: 20px 15px;
+            }
+
+            .final-cta h4 {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+
+            .final-cta p {
+                font-size: 0.9em;
+            }
+
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+
+            /* Footer */
+            footer {
+                padding: 15px 12px;
+            }
+
+            .footer-column h4 {
+                font-size: 0.95em;
+                margin-bottom: 10px;
+            }
+
+            .footer-column ul li {
+                margin-right: 5px;
+            }
+        }
+
+        /* EXTRA SMALL: Below 320px */
+        @media (max-width: 320px) {
+            header h1 {
+                font-size: 1em;
+            }
+
+            .support-header h2 {
+                font-size: 1.3em;
+            }
+
+            .link-card h4 {
+                font-size: 1em;
+            }
+
+            .faq-section h3 {
+                font-size: 1.2em;
+            }
+
+            .final-cta h4 {
+                font-size: 1.1em;
             }
         }
     </style>
@@ -334,7 +694,7 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="shop.html">Shop</a></li>
-                <li><a href="contact.html" class="active">contact</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
                 <li><a href="cart.html">🛒 Cart (<span id="cartCount">0</span>)</a></li>
             </ul>
         </nav>
